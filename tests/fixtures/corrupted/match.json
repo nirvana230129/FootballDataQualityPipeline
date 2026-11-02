@@ -1,0 +1,23 @@
+{
+  "match_id": 888000001,
+  "match_date": "2022-11-20",
+  "kick_off": "17:00:00.000",
+  "competition": {
+    "competition_id": 43,
+    "competition_name": "FIFA World Cup"
+  },
+  "season": {
+    "season_id": 106,
+    "season_name": "2022"
+  },
+  "home_team": {
+    "home_team_id": 888001,
+    "home_team_name": "Fixture Home"
+  },
+  "away_team": {
+    "away_team_id": 888002,
+    "away_team_name": "Fixture Away"
+  },
+  "home_score": 9,
+  "away_score": 0
+}

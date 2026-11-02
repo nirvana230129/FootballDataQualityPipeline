@@ -1,0 +1,18 @@
+[
+  {
+    "team_id": 888001,
+    "team_name": "Fixture Home",
+    "lineup": [
+      {
+        "player_id": 888101,
+        "player_name": "Ok Player",
+        "jersey_number": 9
+      }
+    ]
+  },
+  {
+    "team_id": 888002,
+    "team_name": "Fixture Away",
+    "lineup": []
+  }
+]
