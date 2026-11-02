@@ -547,13 +547,13 @@ validate_shot_end_location
 
 На всех 64 матчах ЧМ-2022 out-of-bounds по x/y для `event.location`, `pass.end_location`, `carry.end_location` и `shot.end_location` = 0.
 
-Проверки координат пока остаются WARNING в `observe`. Их можно готовить к ERROR в будущем `enforce`; режим по умолчанию не меняется.
+В `observe` severity координат — WARNING. В `enforce` (`phase4`) — ERROR. Default `.env` остаётся `observe`.
 
 ---
 
 ## 11. Публикация
 
-Публикация зависит от Data Quality. Полный реестр проверок — в `docs/dq_rules.md`.
+Публикация зависит от Data Quality. Полный реестр проверок — в `docs/dq_rules.md` и `config/checks.yml`.
 
 Витрины читают только матчи со статусом:
 
@@ -561,14 +561,17 @@ validate_shot_end_location
 PUBLISHABLE
 ```
 
-Матч с матчевым CRITICAL в режиме `enforce` уходит в карантин. Остальные матчи публикуются.
+Матч с матчевым CRITICAL в режиме `enforce` уходит в карантин. Остальные матчи публикуются. После match DQ и cross-source вызывается `sql/quality/reconcile_publication.sql`.
 
-Глобальный CRITICAL останавливает публикацию целиком. Примеры:
+Глобальный CRITICAL (`sql/quality/global_checks.sql`) останавливает публикацию целиком в **обоих** режимах. Реализовано:
 
-- источник недоступен;
-- загружено 0 матчей;
-- таблица mapping отсутствует;
-- обязательная таблица или колонка отсутствует.
+- обязательная таблица или колонка отсутствует;
+- загружено 0 матчей (`core.matches`);
+- `core.team_source_mapping` отсутствует или пуст.
+
+CLI: `python -m src.pipeline phase4 --competition WC2022` (всегда `enforce`). Демо карантина: `--demo-quarantine` (синтетический CRITICAL-матч, затем cleanup). Default `.env` остаётся `DQ_MODE=observe`.
+
+Прогон WC2022 phase4: global PASS, quarantined=0, publishable=64, marts пересобраны.
 
 ---
 

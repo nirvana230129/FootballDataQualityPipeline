@@ -33,6 +33,16 @@ Second provider football-data.org for WC 2022 (`DQ_MODE=observe`):
 - score normalization (canonical without penalties; final `3:3` / pens `4:2`)
 - cross-source DQ: arithmetic, score, kickoff, mapping coverage — all PASS on 64/64
 
+### Phase 4
+
+Publication gate (`DQ_MODE=enforce` for phase4; default `.env` stays `observe`):
+
+- expanded match DQ + `config/checks.yml` registry
+- reconcile `match_publication_status` after match + cross-source checks
+- global CRITICAL gate stops marts rebuild
+- marts only for `PUBLISHABLE`; match CRITICAL → `QUARANTINED`
+- corrupted fixtures + pytest; CLI `--demo-quarantine` shows 1 quarantined / 64 publishable
+
 ## Specs
 
 - [docs/data_contract.md](docs/data_contract.md)
@@ -76,6 +86,14 @@ python -m src.pipeline dq-cross --competition WC2022
 pytest tests/test_score_normalization.py -q
 ```
 
+Phase 4 (publication / enforce):
+
+```bash
+python -m src.pipeline phase4 --competition WC2022
+python -m src.pipeline phase4 --competition WC2022 --demo-quarantine
+pytest tests/test_quality.py tests/test_score_normalization.py -q
+```
+
 Step by step (StatsBomb):
 
 ```bash
@@ -94,3 +112,5 @@ Artifacts:
 - profiles: `artifacts/profiles/`
 - bootstrap fixtures (if API 403): `data/football_data/wc2022_*.json`
 - team seed: `seeds/team_source_mapping.csv`
+- DQ registry: `config/checks.yml`
+- quality fixtures: `tests/fixtures/valid|corrupted/`

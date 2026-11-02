@@ -174,10 +174,10 @@ WHERE publication_status = 'PUBLISHABLE'
 | fk_event_player | core | match | ERROR | WARNING | `event.player_id → players`, если заполнен |
 | event_team_not_in_match | core | match | ERROR | WARNING | team события не home/away матча |
 | player_not_in_squad | core | match | ERROR | WARNING | player_id отсутствует в заявке матча |
-| validate_event_location | staging/core | match | ERROR | WARNING | `0..120` / `0..80`; на WC2022 oob=0, готово к ERROR в будущем enforce |
-| validate_pass_end_location | staging/core | match | ERROR | WARNING | на WC2022 oob=0; готово к ERROR в будущем enforce |
-| validate_carry_end_location | staging/core | match | ERROR | WARNING | на WC2022 oob=0; готово к ERROR в будущем enforce |
-| validate_shot_end_location | staging/core | match | ERROR | WARNING | учитывает `[x,y]`/`[x,y,z]`; на WC2022 oob x/y=0 |
+| validate_event_location | staging/core | match | ERROR | WARNING | `0..120` / `0..80`; реализовано; WC2022 phase4 enforce PASS |
+| validate_pass_end_location | staging/core | match | ERROR | WARNING | реализовано; WC2022 oob=0 |
+| validate_carry_end_location | staging/core | match | ERROR | WARNING | реализовано; WC2022 oob=0 |
+| validate_shot_end_location | staging/core | match | ERROR | WARNING | реализовано; end_z не сравнивается с полем |
 | event_time_bounds | staging/core | match | ERROR | WARNING | `minute >= 0`, `second >= 0`, `period IN (1..5)` |
 | missing_event_index | staging/core | match | WARNING | WARNING | пропуски индекса внутри матча |
 | shot_xg_range | staging/core | match | ERROR | WARNING | `0 <= shot_xg <= 1` для Shot |
@@ -185,7 +185,9 @@ WHERE publication_status = 'PUBLISHABLE'
 | cross_source_score_mismatch | core | match | CRITICAL | WARNING | канонический счёт без пенальти; WC2022: 64/64 PASS, финал 3:3 |
 | cross_source_kickoff_mismatch | core | match | WARNING | WARNING | WC2022: max Δ=0ч, гипотеза Asia/Qatar подтверждена; остаётся WARNING |
 | mapping_coverage | core | dataset | WARNING | WARNING | WC2022 football-data: matched=64 unmatched=0 ambiguous=0 coverage=100% |
-| event_volume_anomaly | core | match | WARNING | WARNING | порог не задан до профиля 64 матчей |
+| event_volume_anomaly | core | match | WARNING | WARNING | порог `all < 2076.75` (Q1−3·IQR); всегда WARNING |
+| zero_matches_loaded | core | dataset | CRITICAL | CRITICAL | глобальный CRITICAL; gate перед marts |
+| missing_team_source_mapping | core | dataset | CRITICAL | CRITICAL | глобальный CRITICAL; пустой/отсутствующий mapping |
 
 Правила условных полей:
 
@@ -261,6 +263,22 @@ Coverage football-data → StatsBomb: matched=64, unmatched=0, ambiguous=0 (100%
 
 Финал: StatsBomb `3869685` ↔ football-data `903869685` → канон `3:3`, пенальти `4:2`.
 
+### Публикация WC2022 (фаза 4)
+
+Команда: `python -m src.pipeline phase4 --competition WC2022` (`enforce`).
+
+| gate | result |
+|---|---|
+| match DQ 64/64 | 0 fails |
+| cross-source | PASS |
+| global CRITICAL | PASS |
+| publication | publishable=64 quarantined=0 |
+| marts | rebuilt for PUBLISHABLE only |
+
+Демо: `phase4 --demo-quarantine` → publishable=64 quarantined=1, затем cleanup синтетического матча.
+
+Реестр severity: `config/checks.yml`. Испорченные фикстуры: `tests/fixtures/`; pytest `tests/test_quality.py` (без сети).
+
 ---
 
 ## 6. Пять проверок вертикального среза
@@ -310,7 +328,7 @@ injected anomalies == detected anomalies
 
 ## 8. Открытые вопросы DQ
 
-1. Включать ли кандидат `event_volume_anomaly` (`all < 2076.75`) в `enforce` на других соревнованиях — на WC2022 срабатываний нет.
-2. Когда переводить четыре location-проверки из WARNING в ERROR: на WC2022 oob=0, но решение для `enforce` отложено до явного включения режима.
-3. Когда переводить `football_data_score_arithmetic` / `cross_source_score_mismatch` в ERROR/CRITICAL `enforce`: на WC2022 оба PASS 64/64, но режим по умолчанию остаётся `observe`.
+1. Включать ли кандидат `event_volume_anomaly` (`all < 2076.75`) как ERROR на других соревнованиях — на WC2022 срабатываний нет; в phase4 остаётся WARNING.
+2. ~~Location-проверки в enforce~~ — ERROR в `enforce` через `phase4`; default `.env` = `observe`.
+3. Default режим остаётся `observe`; `phase4` явно ставит `enforce`. Полный FK-хвост реестра ещё не в SQL.
 4. ~~Гипотеза `Asia/Qatar`~~ — подтверждена на WC2022 (Δkickoff=0). `cross_source_kickoff_mismatch` остаётся WARNING для других турниров.
