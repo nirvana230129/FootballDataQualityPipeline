@@ -47,8 +47,32 @@ CREATE TABLE IF NOT EXISTS core.matches (
     source_timezone             TEXT,
     home_score                  INTEGER,
     away_score                  INTEGER,
+    score_regular_time_home     INTEGER,
+    score_regular_time_away     INTEGER,
+    score_extra_time_only_home  INTEGER,
+    score_extra_time_only_away  INTEGER,
+    score_after_extra_time_home INTEGER,
+    score_after_extra_time_away INTEGER,
     score_penalties_home        INTEGER,
     score_penalties_away        INTEGER
+);
+
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_regular_time_home INTEGER;
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_regular_time_away INTEGER;
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_extra_time_only_home INTEGER;
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_extra_time_only_away INTEGER;
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_after_extra_time_home INTEGER;
+ALTER TABLE core.matches
+    ADD COLUMN IF NOT EXISTS score_after_extra_time_away INTEGER;
+
+CREATE TABLE IF NOT EXISTS core.team_keys (
+    canonical_team_key  TEXT PRIMARY KEY,
+    canonical_team_id   BIGINT NOT NULL UNIQUE REFERENCES core.teams (canonical_team_id)
 );
 
 CREATE TABLE IF NOT EXISTS core.match_source_mapping (

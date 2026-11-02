@@ -1,0 +1,204 @@
+{
+  "competition": {
+    "id": 2000,
+    "code": "WC"
+  },
+  "season": {
+    "id": 1382,
+    "startDate": "2022-11-20"
+  },
+  "teams": [
+    {
+      "id": 10865,
+      "name": "Qatar",
+      "shortName": "Qatar",
+      "tla": "QAT"
+    },
+    {
+      "id": 10867,
+      "name": "Ecuador",
+      "shortName": "Ecuador",
+      "tla": "ECU"
+    },
+    {
+      "id": 770,
+      "name": "England",
+      "shortName": "England",
+      "tla": "ENG"
+    },
+    {
+      "id": 10864,
+      "name": "Iran",
+      "shortName": "Iran",
+      "tla": "IRA"
+    },
+    {
+      "id": 797,
+      "name": "United States",
+      "shortName": "United States",
+      "tla": "UNI"
+    },
+    {
+      "id": 833,
+      "name": "Wales",
+      "shortName": "Wales",
+      "tla": "WAL"
+    },
+    {
+      "id": 10915,
+      "name": "Senegal",
+      "shortName": "Senegal",
+      "tla": "SEN"
+    },
+    {
+      "id": 8601,
+      "name": "Netherlands",
+      "shortName": "Netherlands",
+      "tla": "NET"
+    },
+    {
+      "id": 782,
+      "name": "Denmark",
+      "shortName": "Denmark",
+      "tla": "DEN"
+    },
+    {
+      "id": 802,
+      "name": "Tunisia",
+      "shortName": "Tunisia",
+      "tla": "TUN"
+    },
+    {
+      "id": 793,
+      "name": "Mexico",
+      "shortName": "Mexico",
+      "tla": "MEX"
+    },
+    {
+      "id": 794,
+      "name": "Poland",
+      "shortName": "Poland",
+      "tla": "POL"
+    },
+    {
+      "id": 773,
+      "name": "France",
+      "shortName": "France",
+      "tla": "FRA"
+    },
+    {
+      "id": 7665,
+      "name": "Australia",
+      "shortName": "Australia",
+      "tla": "AUS"
+    },
+    {
+      "id": 762,
+      "name": "Argentina",
+      "shortName": "Argentina",
+      "tla": "ARG"
+    },
+    {
+      "id": 8019,
+      "name": "Saudi Arabia",
+      "shortName": "Saudi Arabia",
+      "tla": "SAU"
+    },
+    {
+      "id": 805,
+      "name": "Belgium",
+      "shortName": "Belgium",
+      "tla": "BEL"
+    },
+    {
+      "id": 8010,
+      "name": "Canada",
+      "shortName": "Canada",
+      "tla": "CAN"
+    },
+    {
+      "id": 815,
+      "name": "Morocco",
+      "shortName": "Morocco",
+      "tla": "MOR"
+    },
+    {
+      "id": 799,
+      "name": "Croatia",
+      "shortName": "Croatia",
+      "tla": "CRO"
+    },
+    {
+      "id": 759,
+      "name": "Germany",
+      "shortName": "Germany",
+      "tla": "GER"
+    },
+    {
+      "id": 778,
+      "name": "Japan",
+      "shortName": "Japan",
+      "tla": "JAP"
+    },
+    {
+      "id": 760,
+      "name": "Spain",
+      "shortName": "Spain",
+      "tla": "SPA"
+    },
+    {
+      "id": 8021,
+      "name": "Costa Rica",
+      "shortName": "Costa Rica",
+      "tla": "COS"
+    },
+    {
+      "id": 764,
+      "name": "Brazil",
+      "shortName": "Brazil",
+      "tla": "BRA"
+    },
+    {
+      "id": 780,
+      "name": "Serbia",
+      "shortName": "Serbia",
+      "tla": "SER"
+    },
+    {
+      "id": 769,
+      "name": "Uruguay",
+      "shortName": "Uruguay",
+      "tla": "URU"
+    },
+    {
+      "id": 791,
+      "name": "South Korea",
+      "shortName": "South Korea",
+      "tla": "SOU"
+    },
+    {
+      "id": 788,
+      "name": "Switzerland",
+      "shortName": "Switzerland",
+      "tla": "SWI"
+    },
+    {
+      "id": 1064,
+      "name": "Cameroon",
+      "shortName": "Cameroon",
+      "tla": "CAM"
+    },
+    {
+      "id": 765,
+      "name": "Portugal",
+      "shortName": "Portugal",
+      "tla": "POR"
+    },
+    {
+      "id": 10922,
+      "name": "Ghana",
+      "shortName": "Ghana",
+      "tla": "GHA"
+    }
+  ]
+}

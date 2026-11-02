@@ -1,0 +1,11 @@
+{
+  "id": 2000,
+  "name": "FIFA World Cup",
+  "code": "WC",
+  "type": "CUP",
+  "currentSeason": {
+    "id": 1382,
+    "startDate": "2022-11-20",
+    "endDate": "2022-12-18"
+  }
+}

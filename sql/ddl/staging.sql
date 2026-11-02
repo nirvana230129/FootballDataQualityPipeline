@@ -77,3 +77,60 @@ CREATE INDEX IF NOT EXISTS idx_stg_sb_events_match
     ON staging.statsbomb_events (match_id);
 CREATE INDEX IF NOT EXISTS idx_stg_sb_events_type
     ON staging.statsbomb_events (match_id, event_type);
+
+CREATE TABLE IF NOT EXISTS staging.football_data_teams (
+    team_id             BIGINT PRIMARY KEY,
+    team_name           TEXT NOT NULL,
+    tla                 TEXT,
+    source_batch_id     UUID,
+    loaded_at           TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS staging.football_data_matches (
+    match_id                BIGINT PRIMARY KEY,
+    utc_date                TIMESTAMPTZ,
+    status                  TEXT,
+    stage                   TEXT,
+    matchday                INTEGER,
+    competition_code        TEXT,
+    season_start_year       INTEGER,
+    home_team_id            BIGINT,
+    home_team_name          TEXT,
+    away_team_id            BIGINT,
+    away_team_name          TEXT,
+    duration                TEXT,
+    winner                  TEXT,
+    full_time_home          INTEGER,
+    full_time_away          INTEGER,
+    regular_time_home       INTEGER,
+    regular_time_away       INTEGER,
+    extra_time_home         INTEGER,
+    extra_time_away         INTEGER,
+    penalties_home          INTEGER,
+    penalties_away          INTEGER,
+    canonical_home_score    INTEGER,
+    canonical_away_score    INTEGER,
+    score_arithmetic_ok     BOOLEAN,
+    source_batch_id         UUID,
+    loaded_at               TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+CREATE TABLE IF NOT EXISTS staging.football_data_standings (
+    competition_code    TEXT NOT NULL,
+    season_start_year   INTEGER NOT NULL,
+    stage               TEXT,
+    group_name          TEXT,
+    team_id             BIGINT NOT NULL,
+    team_name           TEXT,
+    position            INTEGER,
+    played_games        INTEGER,
+    won                 INTEGER,
+    draw                INTEGER,
+    lost                INTEGER,
+    points              INTEGER,
+    goals_for           INTEGER,
+    goals_against       INTEGER,
+    source_batch_id     UUID,
+    loaded_at           TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+    PRIMARY KEY (competition_code, season_start_year, stage, group_name, team_id)
+);

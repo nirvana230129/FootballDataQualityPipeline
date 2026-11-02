@@ -9,6 +9,7 @@ from pathlib import Path
 from typing import Any, Iterable
 
 from src.db import DDL_FILES, connect, execute_sql_file
+from src.extract import football_api
 from src.extract.statsbomb import (
     FINAL_MATCH_ID,
     fetch_competition_matches,
@@ -18,7 +19,10 @@ from src.extract.statsbomb import (
     list_match_ids,
     resolve_competition,
 )
+from src.load.football_staging import load_football_data_staging
+from src.load.match_resolve import resolve_matches
 from src.load.raw import insert_raw_payload
+from src.load.seed_teams import seed_teams_from_csv
 from src.visualization.box_entries import render_box_entries
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -321,6 +325,125 @@ def cmd_profile(args: argparse.Namespace) -> None:
     print(f"[profile] wrote {summary_path}")
 
 
+def cmd_ingest_football_data(args: argparse.Namespace) -> None:
+    competition = (args.competition or "WC2022").upper()
+    if competition not in {"WC2022", "WC"}:
+        raise SystemExit("football-data ingest currently supports WC2022 only")
+
+    batch_id = uuid.uuid4()
+    print("[ingest-football-data] fetching competition/teams/matches...")
+    competition_payload = football_api.fetch_competition()
+    teams_payload = football_api.fetch_teams()
+    matches_payload = football_api.fetch_matches()
+    standings_payload = football_api.fetch_standings()
+
+    with connect() as conn:
+        results = {
+            "competitions": insert_raw_payload(
+                conn,
+                table="raw.football_data_competitions",
+                source_id="WC",
+                payload=competition_payload,
+                batch_id=batch_id,
+                provider="football_data",
+                entity_type="competitions",
+            ),
+            "teams": insert_raw_payload(
+                conn,
+                table="raw.football_data_teams",
+                source_id="WC-2022",
+                payload=teams_payload,
+                batch_id=batch_id,
+                provider="football_data",
+                entity_type="teams",
+            ),
+            "matches": insert_raw_payload(
+                conn,
+                table="raw.football_data_matches",
+                source_id="WC-2022",
+                payload=matches_payload,
+                batch_id=batch_id,
+                provider="football_data",
+                entity_type="matches",
+            ),
+        }
+        if standings_payload is not None:
+            results["standings"] = insert_raw_payload(
+                conn,
+                table="raw.football_data_standings",
+                source_id="WC-2022",
+                payload=standings_payload,
+                batch_id=batch_id,
+                provider="football_data",
+                entity_type="standings",
+            )
+        else:
+            results["standings"] = "skipped_unavailable"
+
+        staging_counts = load_football_data_staging(conn)
+        conn.commit()
+
+    source = (matches_payload.get("filters") or {}).get("source", "api")
+    print(f"[ingest-football-data] source={source} batch_id={batch_id}")
+    print(f"  raw={results}")
+    print(f"  staging={staging_counts}")
+    print(f"  matches={len(matches_payload.get('matches', []))}")
+
+
+def cmd_seed_teams(_: argparse.Namespace) -> None:
+    with connect() as conn:
+        stats = seed_teams_from_csv(conn)
+        conn.commit()
+    print(f"[seed-teams] {stats}")
+
+
+def cmd_resolve_matches(_: argparse.Namespace) -> None:
+    with connect() as conn:
+        stats = resolve_matches(conn)
+        conn.commit()
+    total = stats["matched"] + stats["unmatched"] + stats["ambiguous"]
+    coverage = (100.0 * stats["matched"] / total) if total else 0.0
+    print(
+        "[resolve-matches] "
+        f"matched={stats['matched']} unmatched={stats['unmatched']} "
+        f"ambiguous={stats['ambiguous']} coverage={coverage:.2f}%"
+    )
+
+
+def cmd_dq_cross(_: argparse.Namespace) -> None:
+    run_id = uuid.uuid4()
+    with connect() as conn, conn.cursor() as cur:
+        cur.execute("SELECT set_config('app.run_id', %s, true)", (str(run_id),))
+        cur.execute("SELECT set_config('app.dq_mode', %s, true)", (_dq_mode(),))
+        cur.execute((ROOT / "sql/quality/cross_source_checks.sql").read_text(encoding="utf-8"))
+        cur.execute(
+            """
+            SELECT check_name, severity, status, records_checked, records_failed, details
+            FROM monitoring.data_quality_results
+            WHERE run_id = %s
+            ORDER BY check_id
+            """,
+            (run_id,),
+        )
+        rows = cur.fetchall()
+        conn.commit()
+
+    print(f"[dq-cross] run_id={run_id} mode={_dq_mode()}")
+    for check_name, severity, status, checked, failed, details in rows:
+        print(
+            f"  {check_name}: {status} ({severity}) "
+            f"checked={checked} failed={failed} details={details}"
+        )
+
+
+def cmd_phase3(args: argparse.Namespace) -> None:
+    cmd_init(args)
+    cmd_ingest_football_data(args)
+    cmd_seed_teams(args)
+    cmd_resolve_matches(args)
+    cmd_dq_cross(args)
+
+
 def cmd_run(args: argparse.Namespace) -> None:
     if args.match_id is None and not args.competition:
         raise SystemExit("Provide --match-id or --competition WC2022")
@@ -344,7 +467,6 @@ def _add_scope_args(parser: argparse.ArgumentParser, *, require_one: bool = Fals
     parser.add_argument("--match-id", type=int, default=None)
     parser.add_argument("--competition", type=str, default=None)
     if require_one:
-        # Validated in command handlers.
         pass
 
 
@@ -359,13 +481,29 @@ def build_parser() -> argparse.ArgumentParser:
     _add_scope_args(p_ingest)
     p_ingest.set_defaults(func=cmd_ingest)
 
+    p_ingest_fd = sub.add_parser(
+        "ingest-football-data",
+        help="Ingest football-data.org WC2022 (API or bootstrap fixture)",
+    )
+    p_ingest_fd.add_argument("--competition", type=str, default="WC2022")
+    p_ingest_fd.set_defaults(func=cmd_ingest_football_data)
+
+    p_seed = sub.add_parser("seed-teams", help="Load manual team source mapping seed")
+    p_seed.set_defaults(func=cmd_seed_teams)
+
+    p_resolve = sub.add_parser("resolve-matches", help="Match football-data matches to core")
+    p_resolve.set_defaults(func=cmd_resolve_matches)
+
     p_build = sub.add_parser("build", help="Build staging and core")
     _add_scope_args(p_build)
     p_build.set_defaults(func=cmd_build)
 
-    p_dq = sub.add_parser("dq", help="Run data quality checks")
+    p_dq = sub.add_parser("dq", help="Run StatsBomb data quality checks")
     _add_scope_args(p_dq)
     p_dq.set_defaults(func=cmd_dq)
+
+    p_dq_cross = sub.add_parser("dq-cross", help="Run cross-source DQ checks")
+    p_dq_cross.set_defaults(func=cmd_dq_cross)
 
     p_marts = sub.add_parser("marts", help="Rebuild analytics marts")
     p_marts.set_defaults(func=cmd_marts)
@@ -378,7 +516,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_profile.add_argument("--competition", type=str, default="WC2022")
     p_profile.set_defaults(func=cmd_profile)
 
-    p_run = sub.add_parser("run", help="Full pipeline for one match or WC2022")
+    p_phase3 = sub.add_parser("phase3", help="Run football-data integration steps")
+    p_phase3.add_argument("--competition", type=str, default="WC2022")
+    p_phase3.set_defaults(func=cmd_phase3)
+
+    p_run = sub.add_parser("run", help="Full StatsBomb pipeline for one match or WC2022")
     _add_scope_args(p_run)
     p_run.set_defaults(func=cmd_run)
 

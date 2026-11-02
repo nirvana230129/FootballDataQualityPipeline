@@ -1,0 +1,2958 @@
+{
+  "filters": {
+    "season": "2022",
+    "permission": "BOOTSTRAP"
+  },
+  "resultSet": {
+    "count": 64,
+    "played": 64
+  },
+  "competition": {
+    "id": 2000,
+    "name": "FIFA World Cup",
+    "code": "WC",
+    "type": "CUP"
+  },
+  "matches": [
+    {
+      "id": 903857286,
+      "utcDate": "2022-11-20T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-20T13:00:00Z",
+      "homeTeam": {
+        "id": 10865,
+        "name": "Qatar",
+        "shortName": "Qatar",
+        "tla": "QAT"
+      },
+      "awayTeam": {
+        "id": 10867,
+        "name": "Ecuador",
+        "shortName": "Ecuador",
+        "tla": "ECU"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857286
+    },
+    {
+      "id": 903857271,
+      "utcDate": "2022-11-21T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-21T10:00:00Z",
+      "homeTeam": {
+        "id": 770,
+        "name": "England",
+        "shortName": "England",
+        "tla": "ENG"
+      },
+      "awayTeam": {
+        "id": 10864,
+        "name": "Iran",
+        "shortName": "Iran",
+        "tla": "IRA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 6,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857271
+    },
+    {
+      "id": 903857282,
+      "utcDate": "2022-11-21T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-21T16:00:00Z",
+      "homeTeam": {
+        "id": 797,
+        "name": "United States",
+        "shortName": "United States",
+        "tla": "UNI"
+      },
+      "awayTeam": {
+        "id": 833,
+        "name": "Wales",
+        "shortName": "Wales",
+        "tla": "WAL"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857282
+    },
+    {
+      "id": 903857285,
+      "utcDate": "2022-11-21T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-21T13:00:00Z",
+      "homeTeam": {
+        "id": 10915,
+        "name": "Senegal",
+        "shortName": "Senegal",
+        "tla": "SEN"
+      },
+      "awayTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NET"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857285
+    },
+    {
+      "id": 903857254,
+      "utcDate": "2022-11-22T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-22T10:00:00Z",
+      "homeTeam": {
+        "id": 782,
+        "name": "Denmark",
+        "shortName": "Denmark",
+        "tla": "DEN"
+      },
+      "awayTeam": {
+        "id": 802,
+        "name": "Tunisia",
+        "shortName": "Tunisia",
+        "tla": "TUN"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857254
+    },
+    {
+      "id": 903857265,
+      "utcDate": "2022-11-22T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-22T13:00:00Z",
+      "homeTeam": {
+        "id": 793,
+        "name": "Mexico",
+        "shortName": "Mexico",
+        "tla": "MEX"
+      },
+      "awayTeam": {
+        "id": 794,
+        "name": "Poland",
+        "shortName": "Poland",
+        "tla": "POL"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857265
+    },
+    {
+      "id": 903857279,
+      "utcDate": "2022-11-22T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-22T16:00:00Z",
+      "homeTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "awayTeam": {
+        "id": 7665,
+        "name": "Australia",
+        "shortName": "Australia",
+        "tla": "AUS"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 4,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857279
+    },
+    {
+      "id": 903857300,
+      "utcDate": "2022-11-22T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-22T07:00:00Z",
+      "homeTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "awayTeam": {
+        "id": 8019,
+        "name": "Saudi Arabia",
+        "shortName": "Saudi Arabia",
+        "tla": "SAU"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857300
+    },
+    {
+      "id": 903857268,
+      "utcDate": "2022-11-23T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-23T16:00:00Z",
+      "homeTeam": {
+        "id": 805,
+        "name": "Belgium",
+        "shortName": "Belgium",
+        "tla": "BEL"
+      },
+      "awayTeam": {
+        "id": 8010,
+        "name": "Canada",
+        "shortName": "Canada",
+        "tla": "CAN"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857268
+    },
+    {
+      "id": 903857277,
+      "utcDate": "2022-11-23T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-23T07:00:00Z",
+      "homeTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "awayTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857277
+    },
+    {
+      "id": 903857284,
+      "utcDate": "2022-11-23T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-23T10:00:00Z",
+      "homeTeam": {
+        "id": 759,
+        "name": "Germany",
+        "shortName": "Germany",
+        "tla": "GER"
+      },
+      "awayTeam": {
+        "id": 778,
+        "name": "Japan",
+        "shortName": "Japan",
+        "tla": "JAP"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857284
+    },
+    {
+      "id": 903857291,
+      "utcDate": "2022-11-23T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-23T13:00:00Z",
+      "homeTeam": {
+        "id": 760,
+        "name": "Spain",
+        "shortName": "Spain",
+        "tla": "SPA"
+      },
+      "awayTeam": {
+        "id": 8021,
+        "name": "Costa Rica",
+        "shortName": "Costa Rica",
+        "tla": "COS"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 7,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857291
+    },
+    {
+      "id": 903857258,
+      "utcDate": "2022-11-24T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-24T16:00:00Z",
+      "homeTeam": {
+        "id": 764,
+        "name": "Brazil",
+        "shortName": "Brazil",
+        "tla": "BRA"
+      },
+      "awayTeam": {
+        "id": 780,
+        "name": "Serbia",
+        "shortName": "Serbia",
+        "tla": "SER"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857258
+    },
+    {
+      "id": 903857287,
+      "utcDate": "2022-11-24T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-24T10:00:00Z",
+      "homeTeam": {
+        "id": 769,
+        "name": "Uruguay",
+        "shortName": "Uruguay",
+        "tla": "URU"
+      },
+      "awayTeam": {
+        "id": 791,
+        "name": "South Korea",
+        "shortName": "South Korea",
+        "tla": "SOU"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857287
+    },
+    {
+      "id": 903857290,
+      "utcDate": "2022-11-24T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-24T07:00:00Z",
+      "homeTeam": {
+        "id": 788,
+        "name": "Switzerland",
+        "shortName": "Switzerland",
+        "tla": "SWI"
+      },
+      "awayTeam": {
+        "id": 1064,
+        "name": "Cameroon",
+        "shortName": "Cameroon",
+        "tla": "CAM"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857290
+    },
+    {
+      "id": 903857298,
+      "utcDate": "2022-11-24T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-24T13:00:00Z",
+      "homeTeam": {
+        "id": 765,
+        "name": "Portugal",
+        "shortName": "Portugal",
+        "tla": "POR"
+      },
+      "awayTeam": {
+        "id": 10922,
+        "name": "Ghana",
+        "shortName": "Ghana",
+        "tla": "GHA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857298
+    },
+    {
+      "id": 903857272,
+      "utcDate": "2022-11-25T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-25T16:00:00Z",
+      "homeTeam": {
+        "id": 770,
+        "name": "England",
+        "shortName": "England",
+        "tla": "ENG"
+      },
+      "awayTeam": {
+        "id": 797,
+        "name": "United States",
+        "shortName": "United States",
+        "tla": "UNI"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857272
+    },
+    {
+      "id": 903857273,
+      "utcDate": "2022-11-25T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-25T07:00:00Z",
+      "homeTeam": {
+        "id": 833,
+        "name": "Wales",
+        "shortName": "Wales",
+        "tla": "WAL"
+      },
+      "awayTeam": {
+        "id": 10864,
+        "name": "Iran",
+        "shortName": "Iran",
+        "tla": "IRA"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857273
+    },
+    {
+      "id": 903857274,
+      "utcDate": "2022-11-25T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-25T13:00:00Z",
+      "homeTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NET"
+      },
+      "awayTeam": {
+        "id": 10867,
+        "name": "Ecuador",
+        "shortName": "Ecuador",
+        "tla": "ECU"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857274
+    },
+    {
+      "id": 903857301,
+      "utcDate": "2022-11-25T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-25T10:00:00Z",
+      "homeTeam": {
+        "id": 10865,
+        "name": "Qatar",
+        "shortName": "Qatar",
+        "tla": "QAT"
+      },
+      "awayTeam": {
+        "id": 10915,
+        "name": "Senegal",
+        "shortName": "Senegal",
+        "tla": "SEN"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857301
+    },
+    {
+      "id": 903857266,
+      "utcDate": "2022-11-26T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-26T13:00:00Z",
+      "homeTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "awayTeam": {
+        "id": 782,
+        "name": "Denmark",
+        "shortName": "Denmark",
+        "tla": "DEN"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857266
+    },
+    {
+      "id": 903857288,
+      "utcDate": "2022-11-26T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-26T07:00:00Z",
+      "homeTeam": {
+        "id": 802,
+        "name": "Tunisia",
+        "shortName": "Tunisia",
+        "tla": "TUN"
+      },
+      "awayTeam": {
+        "id": 7665,
+        "name": "Australia",
+        "shortName": "Australia",
+        "tla": "AUS"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857288
+    },
+    {
+      "id": 903857289,
+      "utcDate": "2022-11-26T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-26T16:00:00Z",
+      "homeTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "awayTeam": {
+        "id": 793,
+        "name": "Mexico",
+        "shortName": "Mexico",
+        "tla": "MEX"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857289
+    },
+    {
+      "id": 903857297,
+      "utcDate": "2022-11-26T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-26T10:00:00Z",
+      "homeTeam": {
+        "id": 794,
+        "name": "Poland",
+        "shortName": "Poland",
+        "tla": "POL"
+      },
+      "awayTeam": {
+        "id": 8019,
+        "name": "Saudi Arabia",
+        "shortName": "Saudi Arabia",
+        "tla": "SAU"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857297
+    },
+    {
+      "id": 903857263,
+      "utcDate": "2022-11-27T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-27T16:00:00Z",
+      "homeTeam": {
+        "id": 760,
+        "name": "Spain",
+        "shortName": "Spain",
+        "tla": "SPA"
+      },
+      "awayTeam": {
+        "id": 759,
+        "name": "Germany",
+        "shortName": "Germany",
+        "tla": "GER"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857263
+    },
+    {
+      "id": 903857281,
+      "utcDate": "2022-11-27T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-27T13:00:00Z",
+      "homeTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "awayTeam": {
+        "id": 8010,
+        "name": "Canada",
+        "shortName": "Canada",
+        "tla": "CAN"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 4,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857281
+    },
+    {
+      "id": 903857283,
+      "utcDate": "2022-11-27T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-27T10:00:00Z",
+      "homeTeam": {
+        "id": 805,
+        "name": "Belgium",
+        "shortName": "Belgium",
+        "tla": "BEL"
+      },
+      "awayTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857283
+    },
+    {
+      "id": 903857295,
+      "utcDate": "2022-11-27T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-27T07:00:00Z",
+      "homeTeam": {
+        "id": 778,
+        "name": "Japan",
+        "shortName": "Japan",
+        "tla": "JAP"
+      },
+      "awayTeam": {
+        "id": 8021,
+        "name": "Costa Rica",
+        "shortName": "Costa Rica",
+        "tla": "COS"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857295
+    },
+    {
+      "id": 903857259,
+      "utcDate": "2022-11-28T07:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-28T07:00:00Z",
+      "homeTeam": {
+        "id": 1064,
+        "name": "Cameroon",
+        "shortName": "Cameroon",
+        "tla": "CAM"
+      },
+      "awayTeam": {
+        "id": 780,
+        "name": "Serbia",
+        "shortName": "Serbia",
+        "tla": "SER"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857259
+    },
+    {
+      "id": 903857269,
+      "utcDate": "2022-11-28T13:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-28T13:00:00Z",
+      "homeTeam": {
+        "id": 764,
+        "name": "Brazil",
+        "shortName": "Brazil",
+        "tla": "BRA"
+      },
+      "awayTeam": {
+        "id": 788,
+        "name": "Switzerland",
+        "shortName": "Switzerland",
+        "tla": "SWI"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857269
+    },
+    {
+      "id": 903857270,
+      "utcDate": "2022-11-28T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-28T16:00:00Z",
+      "homeTeam": {
+        "id": 765,
+        "name": "Portugal",
+        "shortName": "Portugal",
+        "tla": "POR"
+      },
+      "awayTeam": {
+        "id": 769,
+        "name": "Uruguay",
+        "shortName": "Uruguay",
+        "tla": "URU"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857270
+    },
+    {
+      "id": 903857299,
+      "utcDate": "2022-11-28T10:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-28T10:00:00Z",
+      "homeTeam": {
+        "id": 791,
+        "name": "South Korea",
+        "shortName": "South Korea",
+        "tla": "SOU"
+      },
+      "awayTeam": {
+        "id": 10922,
+        "name": "Ghana",
+        "shortName": "Ghana",
+        "tla": "GHA"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857299
+    },
+    {
+      "id": 903857261,
+      "utcDate": "2022-11-29T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-29T16:00:00Z",
+      "homeTeam": {
+        "id": 833,
+        "name": "Wales",
+        "shortName": "Wales",
+        "tla": "WAL"
+      },
+      "awayTeam": {
+        "id": 770,
+        "name": "England",
+        "shortName": "England",
+        "tla": "ENG"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857261
+    },
+    {
+      "id": 903857267,
+      "utcDate": "2022-11-29T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-29T12:00:00Z",
+      "homeTeam": {
+        "id": 10867,
+        "name": "Ecuador",
+        "shortName": "Ecuador",
+        "tla": "ECU"
+      },
+      "awayTeam": {
+        "id": 10915,
+        "name": "Senegal",
+        "shortName": "Senegal",
+        "tla": "SEN"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857267
+    },
+    {
+      "id": 903857278,
+      "utcDate": "2022-11-29T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-29T16:00:00Z",
+      "homeTeam": {
+        "id": 10864,
+        "name": "Iran",
+        "shortName": "Iran",
+        "tla": "IRA"
+      },
+      "awayTeam": {
+        "id": 797,
+        "name": "United States",
+        "shortName": "United States",
+        "tla": "UNI"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857278
+    },
+    {
+      "id": 903857294,
+      "utcDate": "2022-11-29T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-29T12:00:00Z",
+      "homeTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NET"
+      },
+      "awayTeam": {
+        "id": 10865,
+        "name": "Qatar",
+        "shortName": "Qatar",
+        "tla": "QAT"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857294
+    },
+    {
+      "id": 903857257,
+      "utcDate": "2022-11-30T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-30T12:00:00Z",
+      "homeTeam": {
+        "id": 7665,
+        "name": "Australia",
+        "shortName": "Australia",
+        "tla": "AUS"
+      },
+      "awayTeam": {
+        "id": 782,
+        "name": "Denmark",
+        "shortName": "Denmark",
+        "tla": "DEN"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857257
+    },
+    {
+      "id": 903857260,
+      "utcDate": "2022-11-30T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-30T16:00:00Z",
+      "homeTeam": {
+        "id": 8019,
+        "name": "Saudi Arabia",
+        "shortName": "Saudi Arabia",
+        "tla": "SAU"
+      },
+      "awayTeam": {
+        "id": 793,
+        "name": "Mexico",
+        "shortName": "Mexico",
+        "tla": "MEX"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857260
+    },
+    {
+      "id": 903857264,
+      "utcDate": "2022-11-30T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-30T16:00:00Z",
+      "homeTeam": {
+        "id": 794,
+        "name": "Poland",
+        "shortName": "Poland",
+        "tla": "POL"
+      },
+      "awayTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857264
+    },
+    {
+      "id": 903857275,
+      "utcDate": "2022-11-30T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-11-30T12:00:00Z",
+      "homeTeam": {
+        "id": 802,
+        "name": "Tunisia",
+        "shortName": "Tunisia",
+        "tla": "TUN"
+      },
+      "awayTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857275
+    },
+    {
+      "id": 903857255,
+      "utcDate": "2022-12-01T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-01T16:00:00Z",
+      "homeTeam": {
+        "id": 778,
+        "name": "Japan",
+        "shortName": "Japan",
+        "tla": "JAP"
+      },
+      "awayTeam": {
+        "id": 760,
+        "name": "Spain",
+        "shortName": "Spain",
+        "tla": "SPA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857255
+    },
+    {
+      "id": 903857276,
+      "utcDate": "2022-12-01T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-01T12:00:00Z",
+      "homeTeam": {
+        "id": 8010,
+        "name": "Canada",
+        "shortName": "Canada",
+        "tla": "CAN"
+      },
+      "awayTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857276
+    },
+    {
+      "id": 903857292,
+      "utcDate": "2022-12-01T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-01T16:00:00Z",
+      "homeTeam": {
+        "id": 8021,
+        "name": "Costa Rica",
+        "shortName": "Costa Rica",
+        "tla": "COS"
+      },
+      "awayTeam": {
+        "id": 759,
+        "name": "Germany",
+        "shortName": "Germany",
+        "tla": "GER"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 4
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857292
+    },
+    {
+      "id": 903857296,
+      "utcDate": "2022-12-01T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-01T12:00:00Z",
+      "homeTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "awayTeam": {
+        "id": 805,
+        "name": "Belgium",
+        "shortName": "Belgium",
+        "tla": "BEL"
+      },
+      "score": {
+        "winner": "DRAW",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857296
+    },
+    {
+      "id": 903857256,
+      "utcDate": "2022-12-02T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-02T16:00:00Z",
+      "homeTeam": {
+        "id": 780,
+        "name": "Serbia",
+        "shortName": "Serbia",
+        "tla": "SER"
+      },
+      "awayTeam": {
+        "id": 788,
+        "name": "Switzerland",
+        "shortName": "Switzerland",
+        "tla": "SWI"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857256
+    },
+    {
+      "id": 903857262,
+      "utcDate": "2022-12-02T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-02T12:00:00Z",
+      "homeTeam": {
+        "id": 791,
+        "name": "South Korea",
+        "shortName": "South Korea",
+        "tla": "SOU"
+      },
+      "awayTeam": {
+        "id": 765,
+        "name": "Portugal",
+        "shortName": "Portugal",
+        "tla": "POR"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857262
+    },
+    {
+      "id": 903857280,
+      "utcDate": "2022-12-02T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-02T16:00:00Z",
+      "homeTeam": {
+        "id": 1064,
+        "name": "Cameroon",
+        "shortName": "Cameroon",
+        "tla": "CAM"
+      },
+      "awayTeam": {
+        "id": 764,
+        "name": "Brazil",
+        "shortName": "Brazil",
+        "tla": "BRA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857280
+    },
+    {
+      "id": 903857293,
+      "utcDate": "2022-12-02T12:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-02T12:00:00Z",
+      "homeTeam": {
+        "id": 10922,
+        "name": "Ghana",
+        "shortName": "Ghana",
+        "tla": "GHA"
+      },
+      "awayTeam": {
+        "id": 769,
+        "name": "Uruguay",
+        "shortName": "Uruguay",
+        "tla": "URU"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 0,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3857293
+    },
+    {
+      "id": 903869117,
+      "utcDate": "2022-12-03T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-03T14:00:00Z",
+      "homeTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NET"
+      },
+      "awayTeam": {
+        "id": 797,
+        "name": "United States",
+        "shortName": "United States",
+        "tla": "UNI"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869117
+    },
+    {
+      "id": 903869151,
+      "utcDate": "2022-12-03T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-03T18:00:00Z",
+      "homeTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "awayTeam": {
+        "id": 7665,
+        "name": "Australia",
+        "shortName": "Australia",
+        "tla": "AUS"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869151
+    },
+    {
+      "id": 903869118,
+      "utcDate": "2022-12-04T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-04T18:00:00Z",
+      "homeTeam": {
+        "id": 770,
+        "name": "England",
+        "shortName": "England",
+        "tla": "ENG"
+      },
+      "awayTeam": {
+        "id": 10915,
+        "name": "Senegal",
+        "shortName": "Senegal",
+        "tla": "SEN"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869118
+    },
+    {
+      "id": 903869152,
+      "utcDate": "2022-12-04T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-04T14:00:00Z",
+      "homeTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "awayTeam": {
+        "id": 794,
+        "name": "Poland",
+        "shortName": "Poland",
+        "tla": "POL"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869152
+    },
+    {
+      "id": 903869219,
+      "utcDate": "2022-12-05T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-05T14:00:00Z",
+      "homeTeam": {
+        "id": 778,
+        "name": "Japan",
+        "shortName": "Japan",
+        "tla": "JAP"
+      },
+      "awayTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "PENALTY_SHOOTOUT",
+        "fullTime": {
+          "home": 2,
+          "away": 4
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        },
+        "regularTime": {
+          "home": 1,
+          "away": 1
+        },
+        "extraTime": {
+          "home": 0,
+          "away": 0
+        },
+        "penalties": {
+          "home": 1,
+          "away": 3
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869219
+    },
+    {
+      "id": 903869253,
+      "utcDate": "2022-12-05T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-05T18:00:00Z",
+      "homeTeam": {
+        "id": 764,
+        "name": "Brazil",
+        "shortName": "Brazil",
+        "tla": "BRA"
+      },
+      "awayTeam": {
+        "id": 791,
+        "name": "South Korea",
+        "shortName": "South Korea",
+        "tla": "SOU"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 4,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869253
+    },
+    {
+      "id": 903869220,
+      "utcDate": "2022-12-06T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-06T14:00:00Z",
+      "homeTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "awayTeam": {
+        "id": 760,
+        "name": "Spain",
+        "shortName": "Spain",
+        "tla": "SPA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "PENALTY_SHOOTOUT",
+        "fullTime": {
+          "home": 3,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        },
+        "regularTime": {
+          "home": 0,
+          "away": 0
+        },
+        "extraTime": {
+          "home": 0,
+          "away": 0
+        },
+        "penalties": {
+          "home": 3,
+          "away": 0
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869220
+    },
+    {
+      "id": 903869254,
+      "utcDate": "2022-12-06T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-06T18:00:00Z",
+      "homeTeam": {
+        "id": 765,
+        "name": "Portugal",
+        "shortName": "Portugal",
+        "tla": "POR"
+      },
+      "awayTeam": {
+        "id": 788,
+        "name": "Switzerland",
+        "shortName": "Switzerland",
+        "tla": "SWI"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 6,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869254
+    },
+    {
+      "id": 903869321,
+      "utcDate": "2022-12-09T16:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-09T16:00:00Z",
+      "homeTeam": {
+        "id": 8601,
+        "name": "Netherlands",
+        "shortName": "Netherlands",
+        "tla": "NET"
+      },
+      "awayTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "PENALTY_SHOOTOUT",
+        "fullTime": {
+          "home": 5,
+          "away": 6
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        },
+        "regularTime": {
+          "home": 2,
+          "away": 2
+        },
+        "extraTime": {
+          "home": 0,
+          "away": 0
+        },
+        "penalties": {
+          "home": 3,
+          "away": 4
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869321
+    },
+    {
+      "id": 903869420,
+      "utcDate": "2022-12-09T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-09T14:00:00Z",
+      "homeTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "awayTeam": {
+        "id": 764,
+        "name": "Brazil",
+        "shortName": "Brazil",
+        "tla": "BRA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "PENALTY_SHOOTOUT",
+        "fullTime": {
+          "home": 5,
+          "away": 3
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        },
+        "regularTime": {
+          "home": 0,
+          "away": 0
+        },
+        "extraTime": {
+          "home": 1,
+          "away": 1
+        },
+        "penalties": {
+          "home": 4,
+          "away": 2
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869420
+    },
+    {
+      "id": 903869354,
+      "utcDate": "2022-12-10T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-10T18:00:00Z",
+      "homeTeam": {
+        "id": 770,
+        "name": "England",
+        "shortName": "England",
+        "tla": "ENG"
+      },
+      "awayTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "score": {
+        "winner": "AWAY_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 2
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869354
+    },
+    {
+      "id": 903869486,
+      "utcDate": "2022-12-10T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-10T14:00:00Z",
+      "homeTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "awayTeam": {
+        "id": 765,
+        "name": "Portugal",
+        "shortName": "Portugal",
+        "tla": "POR"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 1,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869486
+    },
+    {
+      "id": 903869519,
+      "utcDate": "2022-12-13T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-13T18:00:00Z",
+      "homeTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "awayTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 3,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869519
+    },
+    {
+      "id": 903869552,
+      "utcDate": "2022-12-14T18:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-14T18:00:00Z",
+      "homeTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "awayTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 0
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869552
+    },
+    {
+      "id": 903869684,
+      "utcDate": "2022-12-17T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "GROUP_STAGE",
+      "group": null,
+      "lastUpdated": "2022-12-17T14:00:00Z",
+      "homeTeam": {
+        "id": 799,
+        "name": "Croatia",
+        "shortName": "Croatia",
+        "tla": "CRO"
+      },
+      "awayTeam": {
+        "id": 815,
+        "name": "Morocco",
+        "shortName": "Morocco",
+        "tla": "MOR"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "REGULAR",
+        "fullTime": {
+          "home": 2,
+          "away": 1
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869684
+    },
+    {
+      "id": 903869685,
+      "utcDate": "2022-12-18T14:00:00Z",
+      "status": "FINISHED",
+      "matchday": null,
+      "stage": "FINAL",
+      "group": null,
+      "lastUpdated": "2022-12-18T14:00:00Z",
+      "homeTeam": {
+        "id": 762,
+        "name": "Argentina",
+        "shortName": "Argentina",
+        "tla": "ARG"
+      },
+      "awayTeam": {
+        "id": 773,
+        "name": "France",
+        "shortName": "France",
+        "tla": "FRA"
+      },
+      "score": {
+        "winner": "HOME_TEAM",
+        "duration": "PENALTY_SHOOTOUT",
+        "fullTime": {
+          "home": 7,
+          "away": 5
+        },
+        "halfTime": {
+          "home": null,
+          "away": null
+        },
+        "regularTime": {
+          "home": 2,
+          "away": 2
+        },
+        "extraTime": {
+          "home": 1,
+          "away": 1
+        },
+        "penalties": {
+          "home": 4,
+          "away": 2
+        }
+      },
+      "competition": {
+        "id": 2000,
+        "name": "FIFA World Cup",
+        "code": "WC",
+        "type": "CUP"
+      },
+      "season": {
+        "id": 1382,
+        "startDate": "2022-11-20",
+        "endDate": "2022-12-18"
+      },
+      "_statsbomb_match_id": 3869685
+    }
+  ]
+}
