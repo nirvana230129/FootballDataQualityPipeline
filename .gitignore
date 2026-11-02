@@ -12,6 +12,7 @@ venv/
 .ruff_cache/
 
 artifacts/
+artifacts/profiles/
 *.png
 !docs/*.png
 
