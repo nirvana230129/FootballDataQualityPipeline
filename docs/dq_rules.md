@@ -181,10 +181,10 @@ WHERE publication_status = 'PUBLISHABLE'
 | event_time_bounds | staging/core | match | ERROR | WARNING | `minute >= 0`, `second >= 0`, `period IN (1..5)` |
 | missing_event_index | staging/core | match | WARNING | WARNING | пропуски индекса внутри матча |
 | shot_xg_range | staging/core | match | ERROR | WARNING | `0 <= shot_xg <= 1` для Shot |
-| football_data_score_arithmetic | staging | match | ERROR | WARNING | контракт арифметики счёта провайдера |
-| cross_source_score_mismatch | core | match | CRITICAL | WARNING | канонический счёт без пенальти |
-| cross_source_kickoff_mismatch | core | match | WARNING | WARNING | допуск, пока гипотеза `Asia/Qatar` не подтверждена |
-| mapping_coverage | core | dataset | WARNING | WARNING | matched / unmatched / ambiguous / coverage_percent |
+| football_data_score_arithmetic | staging | match | ERROR | WARNING | контракт арифметики счёта провайдера; WC2022: 64/64 PASS |
+| cross_source_score_mismatch | core | match | CRITICAL | WARNING | канонический счёт без пенальти; WC2022: 64/64 PASS, финал 3:3 |
+| cross_source_kickoff_mismatch | core | match | WARNING | WARNING | WC2022: max Δ=0ч, гипотеза Asia/Qatar подтверждена; остаётся WARNING |
+| mapping_coverage | core | dataset | WARNING | WARNING | WC2022 football-data: matched=64 unmatched=0 ambiguous=0 coverage=100% |
 | event_volume_anomaly | core | match | WARNING | WARNING | порог не задан до профиля 64 матчей |
 
 Правила условных полей:
@@ -246,6 +246,21 @@ value < Q1 - 3 * IQR
 
 На этом турнире out-of-bounds по x/y не встретился. Четыре location-проверки можно готовить к `ERROR` в будущем `enforce`. Режим по умолчанию остаётся `observe`; карантин матчей не включается.
 
+### Cross-source профиль WC2022 (фаза 3)
+
+Команда: `python -m src.pipeline phase3 --competition WC2022` (или `dq-cross`).
+
+| check_name | status | checked | failed |
+|---|---|---:|---:|
+| football_data_score_arithmetic | PASS | 64 | 0 |
+| cross_source_score_mismatch | PASS | 64 | 0 |
+| cross_source_kickoff_mismatch | PASS | 64 | 0 |
+| mapping_coverage | PASS | 64 | 0 |
+
+Coverage football-data → StatsBomb: matched=64, unmatched=0, ambiguous=0 (100%).
+
+Финал: StatsBomb `3869685` ↔ football-data `903869685` → канон `3:3`, пенальти `4:2`.
+
 ---
 
 ## 6. Пять проверок вертикального среза
@@ -297,5 +312,5 @@ injected anomalies == detected anomalies
 
 1. Включать ли кандидат `event_volume_anomaly` (`all < 2076.75`) в `enforce` на других соревнованиях — на WC2022 срабатываний нет.
 2. Когда переводить четыре location-проверки из WARNING в ERROR: на WC2022 oob=0, но решение для `enforce` отложено до явного включения режима.
-3. Подтверждение арифметики счёта football-data.org на первом сохранённом payload; пока равенство не сходится, `football_data_score_arithmetic` и связанный cross-source score нельзя переводить в `enforce`.
-4. Подтверждение гипотезы `Asia/Qatar` для kickoff; до этого `cross_source_kickoff_mismatch` остаётся WARNING.
+3. Когда переводить `football_data_score_arithmetic` / `cross_source_score_mismatch` в ERROR/CRITICAL `enforce`: на WC2022 оба PASS 64/64, но режим по умолчанию остаётся `observe`.
+4. ~~Гипотеза `Asia/Qatar`~~ — подтверждена на WC2022 (Δkickoff=0). `cross_source_kickoff_mismatch` остаётся WARNING для других турниров.

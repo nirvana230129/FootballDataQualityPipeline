@@ -23,6 +23,16 @@ Full StatsBomb WC 2022 tournament in `DQ_MODE=observe`:
 - marts rebuild for all `PUBLISHABLE` matches
 - profiles for event volumes, coordinates, and types without location
 
+### Phase 3
+
+Second provider football-data.org for WC 2022 (`DQ_MODE=observe`):
+
+- raw / staging ingest (live API or bootstrap fixtures if historical WC is 403 on free tier)
+- manual team seed: 32 national teams × 2 providers
+- match mapping by competition + season + canonical home/away + kickoff confirm
+- score normalization (canonical without penalties; final `3:3` / pens `4:2`)
+- cross-source DQ: arithmetic, score, kickoff, mapping coverage — all PASS on 64/64
+
 ## Specs
 
 - [docs/data_contract.md](docs/data_contract.md)
@@ -33,7 +43,7 @@ Full StatsBomb WC 2022 tournament in `DQ_MODE=observe`:
 
 ```bash
 cp .env.example .env
-# set FOOTBALL_DATA_ORG_API_KEY later for phase 3
+# set FOOTBALL_DATA_ORG_API_KEY
 
 docker compose up -d
 python3 -m venv .venv
@@ -47,14 +57,26 @@ One match:
 python -m src.pipeline run --match-id 3869685
 ```
 
-Full tournament:
+Full tournament (StatsBomb):
 
 ```bash
 DQ_MODE=observe python -m src.pipeline run --competition WC2022
 python -m src.pipeline profile --competition WC2022
 ```
 
-Step by step:
+Phase 3 (football-data + cross-source), after StatsBomb WC2022 is in core:
+
+```bash
+python -m src.pipeline phase3 --competition WC2022
+# or step by step:
+python -m src.pipeline ingest-football-data --competition WC2022
+python -m src.pipeline seed-teams
+python -m src.pipeline resolve-matches --competition WC2022
+python -m src.pipeline dq-cross --competition WC2022
+pytest tests/test_score_normalization.py -q
+```
+
+Step by step (StatsBomb):
 
 ```bash
 python -m src.pipeline init
@@ -70,3 +92,5 @@ Artifacts:
 
 - map: `artifacts/box_entries_3869685.png`
 - profiles: `artifacts/profiles/`
+- bootstrap fixtures (if API 403): `data/football_data/wc2022_*.json`
+- team seed: `seeds/team_source_mapping.csv`

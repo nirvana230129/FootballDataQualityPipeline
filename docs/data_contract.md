@@ -238,11 +238,16 @@ source_batch_id
 - канонические ID не подставляются;
 - «плохие» строки не отбрасываются — их должны видеть проверки.
 
-### 4.3. Открытый вопрос: ключи счёта football-data.org
+### 4.3. Ключи счёта football-data.org
 
-В документации API встречаются и `home` / `away`, и `homeTeam` / `awayTeam`.
+Фактический payload WC2022 (bootstrap / API) использует внутри `fullTime`, `regularTime`, `extraTime`, `penalties`:
 
-Парсер фиксирует фактические ключи первого сохранённого payload в этом документе. До первого успешного extract раздел остаётся открытым.
+```text
+home
+away
+```
+
+Ключи `homeTeam` / `awayTeam` в узлах счёта не встречаются. Парсер в `src/transform/score.py` принимает оба варианта, канон для этого турнира — `home` / `away`.
 
 ---
 
@@ -406,9 +411,9 @@ football-data.org отдаёт `utcDate`.
 
 StatsBomb отдаёт дату и время без timezone offset.
 
-### 7.1. Гипотеза для ЧМ-2022
+### 7.1. Гипотеза для ЧМ-2022 — подтверждена
 
-Рабочая гипотеза: `match_date` и `kick_off` StatsBomb — локальное время стадиона в зоне `Asia/Qatar`.
+`match_date` и `kick_off` StatsBomb — локальное время стадиона в зоне `Asia/Qatar`.
 
 Правило нормализации:
 
@@ -417,7 +422,7 @@ StatsBomb отдаёт дату и время без timezone offset.
 3. перевести в UTC;
 4. записать в `kickoff_utc`.
 
-Пока второй источник не подтвердил гипотезу, расхождение порядка нескольких часов — WARNING, не разрыв сопоставления.
+Сверка со всеми 64 матчами football-data.org `utcDate` на WC2022: max |Δkickoff| = 0 часов. Гипотеза подтверждена. `cross_source_kickoff_mismatch` остаётся WARNING в `observe` (допуск на другие турниры).
 
 ---
 
@@ -459,7 +464,7 @@ duration = PENALTY_SHOOTOUT   → regularTime + extraTime
 
 ### 8.3. Финал ЧМ-2022
 
-Ожидаемый результат cross-source проверки:
+Проверено на matched паре StatsBomb `3869685` ↔ football-data `903869685`:
 
 ```text
 StatsBomb home_score:away_score     3:3
@@ -468,18 +473,17 @@ penalties                           4:2
 status                              PASS
 ```
 
-Сырой `fullTime` этого финала в сравнение со StatsBomb не подставляется.
-
-Если API следует примеру Евро-1996, сырой `fullTime` будет `7:5`:
+Сырой `fullTime` этого финала в сравнение со StatsBomb не подставляется. Фактический payload:
 
 ```text
+duration      PENALTY_SHOOTOUT
 regularTime   2:2
 extraTime     1:1
 penalties     4:2
 fullTime      7:5
 ```
 
-Unit-тест кормит нормализатор сырым JSON и сравнивает уже канонический счёт.
+Unit-тест `tests/test_score_normalization.py` кормит нормализатор сырым JSON и сравнивает канон `3:3` / пенальти `4:2`.
 
 ### 8.4. Контракт арифметики провайдера
 
@@ -572,7 +576,7 @@ PUBLISHABLE
 
 Фиксируются здесь до закрытия фактом из данных:
 
-1. Фактические ключи счёта football-data.org в сохранённом payload: `home` / `away` или `homeTeam` / `awayTeam`.
-2. Подтверждение гипотезы `Asia/Qatar` для StatsBomb kickoff после сверки с `utcDate`.
+1. ~~Фактические ключи счёта football-data.org~~ — закрыто: `home` / `away` (§4.3).
+2. ~~Гипотеза `Asia/Qatar` для StatsBomb kickoff~~ — закрыто на WC2022 (§7.1).
 3. Есть ли легитимные координаты за пределами `120 x 80` у `event.location`, конца паса, конца carry и конца удара.
 4. Полный список служебных типов событий, которые исключаются из аналитического владения: базовый список стартует с `Starting XI`, `Half Start`, `Half End`, `Tactical Shift` и дописывается в `docs/metrics.md`.
