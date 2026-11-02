@@ -1,5 +1,6 @@
 -- Expects app.run_id and app.dq_mode.
 
+DROP TABLE IF EXISTS tmp_cross_dq;
 CREATE TEMP TABLE tmp_cross_dq (
     check_name TEXT,
     check_type TEXT,
@@ -29,23 +30,20 @@ SELECT
     )
 FROM staging.football_data_matches;
 
--- Cross-source canonical score for matched matches.
+-- Per-match cross-source score rows (FAIL quarantines the match in enforce).
 INSERT INTO tmp_cross_dq
 SELECT
     'cross_source_score_mismatch',
     'cross_source',
     CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'CRITICAL' ELSE 'WARNING' END,
-    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
-    NULL,
-    COUNT(*),
-    COUNT(*) FILTER (WHERE bad),
-    COALESCE(
-        jsonb_agg(jsonb_build_object(
-            'canonical_match_id', canonical_match_id,
-            'statsbomb', jsonb_build_array(sb_home, sb_away),
-            'football_data', jsonb_build_array(fd_home, fd_away)
-        )) FILTER (WHERE bad),
-        '[]'::jsonb
+    CASE WHEN bad THEN 'FAIL' ELSE 'PASS' END,
+    canonical_match_id,
+    1,
+    CASE WHEN bad THEN 1 ELSE 0 END,
+    jsonb_build_object(
+        'canonical_match_id', canonical_match_id,
+        'statsbomb', jsonb_build_array(sb_home, sb_away),
+        'football_data', jsonb_build_array(fd_home, fd_away)
     )
 FROM (
     SELECT
