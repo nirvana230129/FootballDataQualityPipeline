@@ -1,0 +1,65 @@
+canonical_team_key,provider,source_team_id,source_name,mapping_method,mapping_status
+argentina,statsbomb,779,Argentina,manual_seed,confirmed
+argentina,football_data,762,Argentina,manual_seed,confirmed
+australia,statsbomb,792,Australia,manual_seed,confirmed
+australia,football_data,7665,Australia,manual_seed,confirmed
+belgium,statsbomb,782,Belgium,manual_seed,confirmed
+belgium,football_data,805,Belgium,manual_seed,confirmed
+brazil,statsbomb,781,Brazil,manual_seed,confirmed
+brazil,football_data,764,Brazil,manual_seed,confirmed
+cameroon,statsbomb,2722,Cameroon,manual_seed,confirmed
+cameroon,football_data,1064,Cameroon,manual_seed,confirmed
+canada,statsbomb,1833,Canada,manual_seed,confirmed
+canada,football_data,8010,Canada,manual_seed,confirmed
+costa_rica,statsbomb,795,Costa Rica,manual_seed,confirmed
+costa_rica,football_data,8021,Costa Rica,manual_seed,confirmed
+croatia,statsbomb,785,Croatia,manual_seed,confirmed
+croatia,football_data,799,Croatia,manual_seed,confirmed
+denmark,statsbomb,776,Denmark,manual_seed,confirmed
+denmark,football_data,782,Denmark,manual_seed,confirmed
+ecuador,statsbomb,3565,Ecuador,manual_seed,confirmed
+ecuador,football_data,10867,Ecuador,manual_seed,confirmed
+england,statsbomb,768,England,manual_seed,confirmed
+england,football_data,770,England,manual_seed,confirmed
+france,statsbomb,771,France,manual_seed,confirmed
+france,football_data,773,France,manual_seed,confirmed
+germany,statsbomb,770,Germany,manual_seed,confirmed
+germany,football_data,759,Germany,manual_seed,confirmed
+ghana,statsbomb,4885,Ghana,manual_seed,confirmed
+ghana,football_data,10922,Ghana,manual_seed,confirmed
+iran,statsbomb,797,Iran,manual_seed,confirmed
+iran,football_data,10864,Iran,manual_seed,confirmed
+japan,statsbomb,778,Japan,manual_seed,confirmed
+japan,football_data,778,Japan,manual_seed,confirmed
+mexico,statsbomb,794,Mexico,manual_seed,confirmed
+mexico,football_data,793,Mexico,manual_seed,confirmed
+morocco,statsbomb,788,Morocco,manual_seed,confirmed
+morocco,football_data,815,Morocco,manual_seed,confirmed
+netherlands,statsbomb,941,Netherlands,manual_seed,confirmed
+netherlands,football_data,8601,Netherlands,manual_seed,confirmed
+poland,statsbomb,789,Poland,manual_seed,confirmed
+poland,football_data,794,Poland,manual_seed,confirmed
+portugal,statsbomb,780,Portugal,manual_seed,confirmed
+portugal,football_data,765,Portugal,manual_seed,confirmed
+qatar,statsbomb,3566,Qatar,manual_seed,confirmed
+qatar,football_data,10865,Qatar,manual_seed,confirmed
+saudi_arabia,statsbomb,799,Saudi Arabia,manual_seed,confirmed
+saudi_arabia,football_data,8019,Saudi Arabia,manual_seed,confirmed
+senegal,statsbomb,787,Senegal,manual_seed,confirmed
+senegal,football_data,10915,Senegal,manual_seed,confirmed
+serbia,statsbomb,786,Serbia,manual_seed,confirmed
+serbia,football_data,780,Serbia,manual_seed,confirmed
+south_korea,statsbomb,791,South Korea,manual_seed,confirmed
+south_korea,football_data,791,South Korea,manual_seed,confirmed
+spain,statsbomb,772,Spain,manual_seed,confirmed
+spain,football_data,760,Spain,manual_seed,confirmed
+switzerland,statsbomb,773,Switzerland,manual_seed,confirmed
+switzerland,football_data,788,Switzerland,manual_seed,confirmed
+tunisia,statsbomb,777,Tunisia,manual_seed,confirmed
+tunisia,football_data,802,Tunisia,manual_seed,confirmed
+united_states,statsbomb,1839,United States,manual_seed,confirmed
+united_states,football_data,797,United States,manual_seed,confirmed
+uruguay,statsbomb,783,Uruguay,manual_seed,confirmed
+uruguay,football_data,769,Uruguay,manual_seed,confirmed
+wales,statsbomb,907,Wales,manual_seed,confirmed
+wales,football_data,833,Wales,manual_seed,confirmed
