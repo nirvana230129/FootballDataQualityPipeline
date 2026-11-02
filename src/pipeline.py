@@ -29,7 +29,6 @@ from src.load.publish import (
 )
 from src.load.raw import insert_raw_payload
 from src.load.seed_teams import seed_teams_from_csv
-from src.visualization.box_entries import render_box_entries
 
 ROOT = Path(__file__).resolve().parents[1]
 DEMO_QUARANTINE_MATCH_ID = 999000001
@@ -270,6 +269,8 @@ def cmd_marts(_: argparse.Namespace) -> None:
 
 
 def cmd_viz(args: argparse.Namespace) -> None:
+    from src.visualization.box_entries import render_box_entries
+
     match_id = args.match_id if args.match_id is not None else FINAL_MATCH_ID
     output = ROOT / "artifacts" / f"box_entries_{match_id}.png"
     path = render_box_entries(match_id, output)

@@ -1,3 +1,47 @@
+x-airflow-common: &airflow-common
+  build:
+    context: .
+    dockerfile: Dockerfile.airflow
+  image: football-airflow:3.0.2-python3.12
+  environment: &airflow-common-env
+    AIRFLOW__CORE__EXECUTOR: LocalExecutor
+    AIRFLOW__CORE__AUTH_MANAGER: airflow.api_fastapi.auth.managers.simple.simple_auth_manager.SimpleAuthManager
+    AIRFLOW__CORE__SIMPLE_AUTH_MANAGER_ALL_ADMINS: "true"
+    AIRFLOW__CORE__LOAD_EXAMPLES: "false"
+    AIRFLOW__CORE__DAGS_ARE_PAUSED_AT_CREATION: "true"
+    AIRFLOW__CORE__FERNET_KEY: ${AIRFLOW_FERNET_KEY:-d6Vefz3G9U_ynXB3cr7y_Ak35tAHkEGAVxuz_B-jzWw=}
+    AIRFLOW__CORE__EXECUTION_API_SERVER_URL: http://airflow-apiserver:8080/execution/
+    AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER:-football}:${POSTGRES_PASSWORD:-football}@postgres:5432/airflow
+    AIRFLOW__API__BASE_URL: http://localhost:${AIRFLOW_WEBSERVER_PORT:-8080}/
+    AIRFLOW__API_AUTH__JWT_SECRET: ${AIRFLOW_JWT_SECRET:-football-local-jwt-secret-change-me}
+    AIRFLOW_UID: ${AIRFLOW_UID:-50000}
+    # Skip entrypoint `airflow db check` (spins on this image/host); DB is migrated by airflow-init.
+    CONNECTION_CHECK_MAX_COUNT: "0"
+    AIRFLOW__CORE__DAGBAG_IMPORT_TIMEOUT: "120"
+    AIRFLOW__DAG_PROCESSOR__DAG_FILE_PROCESSOR_TIMEOUT: "180"
+    AIRFLOW__SCHEDULER__SCHEDULER_HEARTBEAT_SEC: "20"
+    PYTHONPATH: /opt/airflow/project
+    POSTGRES_HOST: postgres
+    POSTGRES_PORT: "5432"
+    POSTGRES_DB: ${POSTGRES_DB:-football}
+    POSTGRES_USER: ${POSTGRES_USER:-football}
+    POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-football}
+    FOOTBALL_DATA_ORG_API_KEY: ${FOOTBALL_DATA_ORG_API_KEY:-}
+    DQ_MODE: ${DQ_MODE:-observe}
+  volumes:
+    - ./dags:/opt/airflow/dags
+    - ./logs:/opt/airflow/logs
+    - ./src:/opt/airflow/project/src
+    - ./sql:/opt/airflow/project/sql
+    - ./config:/opt/airflow/project/config
+    - ./seeds:/opt/airflow/project/seeds
+    - ./data:/opt/airflow/project/data
+    - ./artifacts:/opt/airflow/project/artifacts
+  user: "${AIRFLOW_UID:-50000}:0"
+  depends_on:
+    postgres:
+      condition: service_healthy
+
 services:
   postgres:
     image: postgres:16.4
@@ -10,11 +54,110 @@ services:
       - "${POSTGRES_PORT:-5432}:5432"
     volumes:
       - football_pg_data:/var/lib/postgresql/data
+      - ./docker/postgres/init-airflow-db.sql:/docker-entrypoint-initdb.d/init-airflow-db.sql:ro
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-football} -d ${POSTGRES_DB:-football}"]
       interval: 5s
       timeout: 5s
       retries: 10
+
+  airflow-init:
+    <<: *airflow-common
+    container_name: football_airflow_init
+    entrypoint: /bin/bash
+    command:
+      - -c
+      - |
+        set -e
+        mkdir -p /opt/airflow/logs /opt/airflow/dags
+        echo "Ensuring airflow metadata database exists..."
+        python - <<'PY'
+        import os
+        import time
+        import psycopg
+        host = os.environ["POSTGRES_HOST"]
+        user = os.environ["POSTGRES_USER"]
+        password = os.environ["POSTGRES_PASSWORD"]
+        for _ in range(30):
+            try:
+                with psycopg.connect(
+                    f"postgresql://{user}:{password}@{host}:5432/postgres",
+                    autocommit=True,
+                ) as conn:
+                    with conn.cursor() as cur:
+                        cur.execute("SELECT 1 FROM pg_database WHERE datname = 'airflow'")
+                        if cur.fetchone() is None:
+                            cur.execute("CREATE DATABASE airflow")
+                            print("Created database airflow")
+                        else:
+                            print("Database airflow already exists")
+                break
+            except Exception as exc:
+                print(f"waiting for postgres: {exc}")
+                time.sleep(2)
+        else:
+            raise SystemExit("postgres not ready")
+        PY
+        airflow db migrate
+        echo "Airflow init done."
+    restart: "no"
+
+  airflow-apiserver:
+    <<: *airflow-common
+    container_name: football_airflow_apiserver
+    # Single worker avoids uvicorn child-process death loop on Docker Desktop / ARM.
+    command: api-server --workers 1
+    environment:
+      <<: *airflow-common-env
+      AIRFLOW__API__WORKERS: "1"
+    ports:
+      - "${AIRFLOW_WEBSERVER_PORT:-8080}:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:8080/api/v2/monitor/health || curl -f http://localhost:8080/health || exit 1"]
+      interval: 20s
+      timeout: 10s
+      retries: 15
+      start_period: 90s
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-scheduler:
+    <<: *airflow-common
+    container_name: football_airflow_scheduler
+    command: scheduler
+    healthcheck:
+      test: ["CMD", "airflow", "jobs", "check", "--job-type", "SchedulerJob", "--hostname", "$${HOSTNAME}"]
+      interval: 30s
+      timeout: 15s
+      retries: 10
+      start_period: 90s
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
+
+  airflow-dag-processor:
+    <<: *airflow-common
+    container_name: football_airflow_dag_processor
+    command: dag-processor
+    healthcheck:
+      test: ["CMD-SHELL", "airflow jobs check --job-type DagProcessorJob --hostname \"$${HOSTNAME}\" || exit 1"]
+      interval: 30s
+      timeout: 15s
+      retries: 10
+      start_period: 90s
+    restart: always
+    depends_on:
+      postgres:
+        condition: service_healthy
+      airflow-init:
+        condition: service_completed_successfully
 
 volumes:
   football_pg_data:

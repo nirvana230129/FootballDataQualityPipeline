@@ -1,0 +1,5 @@
+# Runtime deps for DAG tasks inside the Airflow image.
+# Keep this lean — do not upgrade Airflow's pinned pandas/numpy.
+requests==2.32.3
+psycopg[binary]==3.2.3
+python-dotenv==1.0.1
