@@ -263,7 +263,17 @@ Half End
 Tactical Shift
 ```
 
-Список можно расширить после профиля типов событий. Расширения дописываются сюда явно.
+После профиля WC2022 типы с полностью отсутствующим location также включают:
+
+```text
+Substitution
+Injury Stoppage
+Player On
+Player Off
+Bad Behaviour
+```
+
+Они не добавляются в exclusion-list владения автоматически: сначала нужно решить, влияют ли они на possession boundaries. Текущий mart исключает только четыре служебных типа выше.
 
 ### 5.2. Витрина `marts.possessions`
 

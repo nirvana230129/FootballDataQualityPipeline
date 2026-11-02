@@ -174,10 +174,10 @@ WHERE publication_status = 'PUBLISHABLE'
 | fk_event_player | core | match | ERROR | WARNING | `event.player_id → players`, если заполнен |
 | event_team_not_in_match | core | match | ERROR | WARNING | team события не home/away матча |
 | player_not_in_squad | core | match | ERROR | WARNING | player_id отсутствует в заявке матча |
-| validate_event_location | staging/core | match | ERROR | WARNING | `0..120` / `0..80`, если location есть |
-| validate_pass_end_location | staging/core | match | ERROR | WARNING | отдельно от event.location |
-| validate_carry_end_location | staging/core | match | ERROR | WARNING | отдельно от event.location |
-| validate_shot_end_location | staging/core | match | ERROR | WARNING | учитывает `[x,y]` и `[x,y,z]` |
+| validate_event_location | staging/core | match | ERROR | WARNING | `0..120` / `0..80`; на WC2022 oob=0, готово к ERROR в будущем enforce |
+| validate_pass_end_location | staging/core | match | ERROR | WARNING | на WC2022 oob=0; готово к ERROR в будущем enforce |
+| validate_carry_end_location | staging/core | match | ERROR | WARNING | на WC2022 oob=0; готово к ERROR в будущем enforce |
+| validate_shot_end_location | staging/core | match | ERROR | WARNING | учитывает `[x,y]`/`[x,y,z]`; на WC2022 oob x/y=0 |
 | event_time_bounds | staging/core | match | ERROR | WARNING | `minute >= 0`, `second >= 0`, `period IN (1..5)` |
 | missing_event_index | staging/core | match | WARNING | WARNING | пропуски индекса внутри матча |
 | shot_xg_range | staging/core | match | ERROR | WARNING | `0 <= shot_xg <= 1` для Shot |
@@ -195,24 +195,56 @@ Shot  → shot_xg, shot end location
 Carry → carry end location
 ```
 
-`Starting XI`, `Half Start`, `Half End`, `Tactical Shift` могут не иметь location. Пустая координата у них — не ошибка.
+Типы с location всегда пустым на WC2022 (не ошибка):
+
+```text
+Substitution
+Injury Stoppage
+Half End
+Half Start
+Tactical Shift
+Starting XI
+Player On
+Player Off
+Bad Behaviour
+```
 
 `player_id` проверяется только там, где тип события обязан его иметь, либо когда поле уже заполнено для FK / squad checks.
 
-Порог объёма событий вида `2500–4000` не используется. До профиля проверка `event_volume_anomaly` остаётся WARNING. После загрузки 64 матчей в этот документ дописываются:
+### Профиль объёма событий WC2022
+
+Источник: `staging.statsbomb_events`, 64 матча, 234637 событий. Команда: `python -m src.pipeline profile --competition WC2022`.
+
+| metric | min | p05 | p25 | median | p75 | p95 | max | IQR |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| all | 2827 | 3140.65 | 3377.25 | 3588 | 3810.75 | 4542.65 | 5145 | 433.5 |
+| Pass | 776 | 919.3 | 977.5 | 1039 | 1107.75 | 1345.1 | 1484 | 130.25 |
+| Shot | 9 | 13 | 18 | 22.5 | 28 | 37.85 | 38 | 10 |
+| Carry | 531 | 661 | 762.5 | 829.5 | 901 | 1076.3 | 1257 | 138.5 |
+| Pressure | 177 | 194.15 | 231.75 | 254 | 283.75 | 327.35 | 406 | 52 |
+| Duel | 46 | 51 | 59 | 67.5 | 76 | 93.7 | 106 | 17 |
+
+Порог вида `2500–4000` не используется: даже минимум турнира выше 2800.
+
+Кандидат для `event_volume_anomaly` (только WARNING, не blocking):
 
 ```text
-min
-p05
-p25
-median
-p75
-p95
-max
-IQR
+value < Q1 - 3 * IQR
+для all: 3377.25 - 3 * 433.5 = 2076.75
 ```
 
-отдельно для всех событий и для `Pass`, `Shot`, `Carry`, `Pressure`, `Duel`. Формула вида `Q1 - 3 * IQR` — гипотеза, не стартовое ограничение.
+На WC2022 ни один матч не падает ниже этого порога. Правило остаётся кандидатом и не переводится в `enforce`.
+
+### Профиль координат WC2022
+
+| field | present | out_of_bounds | rate |
+|---|---:|---:|---:|
+| event.location | 232512 | 0 | 0 |
+| pass.end_location | 68515 | 0 | 0 |
+| carry.end_location | 53764 | 0 | 0 |
+| shot.end_location | 1494 | 0 | 0 |
+
+На этом турнире out-of-bounds по x/y не встретился. Четыре location-проверки можно готовить к `ERROR` в будущем `enforce`. Режим по умолчанию остаётся `observe`; карантин матчей не включается.
 
 ---
 
@@ -263,7 +295,7 @@ injected anomalies == detected anomalies
 
 ## 8. Открытые вопросы DQ
 
-1. Числовой порог `event_volume_anomaly` после профиля всех 64 матчей.
-2. Severity четырёх location-проверок после распределения координат; заранее не фиксировать, что out-of-bounds end location — норма.
+1. Включать ли кандидат `event_volume_anomaly` (`all < 2076.75`) в `enforce` на других соревнованиях — на WC2022 срабатываний нет.
+2. Когда переводить четыре location-проверки из WARNING в ERROR: на WC2022 oob=0, но решение для `enforce` отложено до явного включения режима.
 3. Подтверждение арифметики счёта football-data.org на первом сохранённом payload; пока равенство не сходится, `football_data_score_arithmetic` и связанный cross-source score нельзя переводить в `enforce`.
 4. Подтверждение гипотезы `Asia/Qatar` для kickoff; до этого `cross_source_kickoff_mismatch` остаётся WARNING.
