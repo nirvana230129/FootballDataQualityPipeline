@@ -3,6 +3,7 @@
 --   app.run_id     UUID of current pipeline run
 --   app.dq_mode    observe|enforce
 
+DROP TABLE IF EXISTS tmp_dq_results;
 CREATE TEMP TABLE tmp_dq_results (
     check_name TEXT,
     check_type TEXT,
@@ -68,15 +69,21 @@ SELECT
     COUNT(*),
     COUNT(*) FILTER (WHERE cnt > 1),
     COALESCE(
-        jsonb_agg(jsonb_build_object('event_id', event_id, 'count', cnt))
+        jsonb_agg(jsonb_build_object('event_id', event_id, 'count', cnt, 'layer', layer))
             FILTER (WHERE cnt > 1),
         '[]'::jsonb
     )
 FROM (
-    SELECT event_id, COUNT(*) AS cnt
+    SELECT event_id, COUNT(*) AS cnt, 'staging' AS layer
     FROM staging.statsbomb_events
     WHERE match_id = current_setting('app.match_id')::BIGINT
     GROUP BY event_id
+    UNION ALL
+    SELECT e ->> 'id' AS event_id, COUNT(*) AS cnt, 'raw' AS layer
+    FROM raw.statsbomb_events_current r
+    CROSS JOIN LATERAL jsonb_array_elements(r.payload) AS e
+    WHERE r.source_id = current_setting('app.match_id')
+    GROUP BY e ->> 'id'
 ) d;
 
 INSERT INTO tmp_dq_results
@@ -174,6 +181,222 @@ FROM (
     WHERE e.match_id = current_setting('app.match_id')::BIGINT
 ) p;
 
+INSERT INTO tmp_dq_results
+SELECT
+    'duplicate_event_index',
+    'duplicate',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'CRITICAL' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE cnt > 1) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*),
+    COUNT(*) FILTER (WHERE cnt > 1),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_index', event_index, 'count', cnt))
+            FILTER (WHERE cnt > 1),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT event_index, COUNT(*) AS cnt
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_index IS NOT NULL
+    GROUP BY event_index
+) d;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'carry_required_fields',
+    'conditional_null',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_id', event_id)) FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        (carry_end_x IS NULL OR carry_end_y IS NULL) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_type = 'Carry'
+) c;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'validate_event_location',
+    'bounds',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*) FILTER (WHERE x IS NOT NULL AND y IS NOT NULL),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_id', event_id, 'x', x, 'y', y))
+            FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        x,
+        y,
+        x IS NOT NULL AND y IS NOT NULL
+        AND (x < 0 OR x > 120 OR y < 0 OR y > 80) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+) loc;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'validate_pass_end_location',
+    'bounds',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*) FILTER (WHERE end_x IS NOT NULL AND end_y IS NOT NULL),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_id', event_id, 'end_x', end_x, 'end_y', end_y))
+            FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        end_x,
+        end_y,
+        end_x IS NOT NULL AND end_y IS NOT NULL
+        AND (end_x < 0 OR end_x > 120 OR end_y < 0 OR end_y > 80) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_type = 'Pass'
+) p;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'validate_carry_end_location',
+    'bounds',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*) FILTER (WHERE carry_end_x IS NOT NULL AND carry_end_y IS NOT NULL),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object(
+            'event_id', event_id,
+            'carry_end_x', carry_end_x,
+            'carry_end_y', carry_end_y
+        )) FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        carry_end_x,
+        carry_end_y,
+        carry_end_x IS NOT NULL AND carry_end_y IS NOT NULL
+        AND (
+            carry_end_x < 0 OR carry_end_x > 120
+            OR carry_end_y < 0 OR carry_end_y > 80
+        ) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_type = 'Carry'
+) c;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'validate_shot_end_location',
+    'bounds',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*) FILTER (WHERE end_x IS NOT NULL AND end_y IS NOT NULL),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_id', event_id, 'end_x', end_x, 'end_y', end_y))
+            FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        end_x,
+        end_y,
+        end_x IS NOT NULL AND end_y IS NOT NULL
+        AND (end_x < 0 OR end_x > 120 OR end_y < 0 OR end_y > 80) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_type = 'Shot'
+) s;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'event_time_bounds',
+    'bounds',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object(
+            'event_id', event_id,
+            'minute', minute,
+            'second', second,
+            'period', period
+        )) FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        minute,
+        second,
+        period,
+        (minute IS NOT NULL AND minute < 0)
+        OR (second IS NOT NULL AND second < 0)
+        OR (period IS NOT NULL AND period NOT IN (1, 2, 3, 4, 5)) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+) t;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'shot_xg_range',
+    'range',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE bad) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*) FILTER (WHERE shot_xg IS NOT NULL),
+    COUNT(*) FILTER (WHERE bad),
+    COALESCE(
+        jsonb_agg(jsonb_build_object('event_id', event_id, 'shot_xg', shot_xg))
+            FILTER (WHERE bad),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        event_id,
+        shot_xg,
+        shot_xg IS NOT NULL AND (shot_xg < 0 OR shot_xg > 1) AS bad
+    FROM staging.statsbomb_events
+    WHERE match_id = current_setting('app.match_id')::BIGINT
+      AND event_type = 'Shot'
+) x;
+
+INSERT INTO tmp_dq_results
+SELECT
+    'event_volume_anomaly',
+    'volume',
+    'WARNING',
+    CASE WHEN COUNT(*) < 2076.75 THEN 'FAIL' ELSE 'PASS' END,
+    COUNT(*),
+    CASE WHEN COUNT(*) < 2076.75 THEN 1 ELSE 0 END,
+    jsonb_build_object(
+        'event_count', COUNT(*),
+        'threshold', 2076.75,
+        'rule', 'Q1 - 3 * IQR from WC2022 profile'
+    )
+FROM staging.statsbomb_events
+WHERE match_id = current_setting('app.match_id')::BIGINT;
+
 INSERT INTO monitoring.data_quality_results (
     run_id,
     source,
@@ -222,69 +445,5 @@ JOIN core.match_source_mapping msm
   ON msm.provider = 'statsbomb'
  AND msm.source_match_id = current_setting('app.match_id');
 
-UPDATE monitoring.match_publication_status mps
-SET
-    dq_status = CASE
-        WHEN EXISTS (
-            SELECT 1
-            FROM monitoring.data_quality_results d
-            WHERE d.run_id = current_setting('app.run_id')::UUID
-              AND d.canonical_match_id = mps.canonical_match_id
-              AND d.status = 'FAIL'
-              AND d.severity = 'CRITICAL'
-              AND current_setting('app.dq_mode') = 'enforce'
-        ) THEN 'FAIL'
-        WHEN EXISTS (
-            SELECT 1
-            FROM monitoring.data_quality_results d
-            WHERE d.run_id = current_setting('app.run_id')::UUID
-              AND d.canonical_match_id = mps.canonical_match_id
-              AND d.status = 'FAIL'
-        ) THEN 'WARN'
-        ELSE 'PASS'
-    END,
-    publication_status = CASE
-        WHEN current_setting('app.dq_mode') = 'enforce'
-         AND EXISTS (
-            SELECT 1
-            FROM monitoring.data_quality_results d
-            WHERE d.run_id = current_setting('app.run_id')::UUID
-              AND d.canonical_match_id = mps.canonical_match_id
-              AND d.status = 'FAIL'
-              AND d.severity = 'CRITICAL'
-         ) THEN 'QUARANTINED'
-        ELSE 'PUBLISHABLE'
-    END,
-    is_quarantined = CASE
-        WHEN current_setting('app.dq_mode') = 'enforce'
-         AND EXISTS (
-            SELECT 1
-            FROM monitoring.data_quality_results d
-            WHERE d.run_id = current_setting('app.run_id')::UUID
-              AND d.canonical_match_id = mps.canonical_match_id
-              AND d.status = 'FAIL'
-              AND d.severity = 'CRITICAL'
-         ) THEN TRUE
-        ELSE FALSE
-    END,
-    critical_check_count = (
-        SELECT COUNT(*)
-        FROM monitoring.data_quality_results d
-        WHERE d.run_id = current_setting('app.run_id')::UUID
-          AND d.canonical_match_id = mps.canonical_match_id
-          AND d.status = 'FAIL'
-          AND d.severity = 'CRITICAL'
-    ),
-    warning_check_count = (
-        SELECT COUNT(*)
-        FROM monitoring.data_quality_results d
-        WHERE d.run_id = current_setting('app.run_id')::UUID
-          AND d.canonical_match_id = mps.canonical_match_id
-          AND d.status = 'FAIL'
-          AND d.severity IN ('WARNING', 'ERROR')
-    ),
-    last_checked_at = NOW()
-FROM core.match_source_mapping msm
-WHERE msm.provider = 'statsbomb'
-  AND msm.source_match_id = current_setting('app.match_id')
-  AND mps.canonical_match_id = msm.canonical_match_id;
+-- Publication status is reconciled after all match + cross-source checks
+-- via sql/quality/reconcile_publication.sql.

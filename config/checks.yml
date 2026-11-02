@@ -1,0 +1,136 @@
+# Data quality check registry.
+# SQL implementations use CASE WHEN app.dq_mode = 'enforce' THEN enforce_severity ELSE WARNING
+# (except global CRITICAL, which is CRITICAL in both modes).
+
+checks:
+  - check_name: missing_required_table_or_column
+    layer: staging/core
+    grain: dataset
+    enforce_severity: CRITICAL
+    notes: global CRITICAL; schema and required columns
+
+  - check_name: zero_matches_loaded
+    layer: core
+    grain: dataset
+    enforce_severity: CRITICAL
+    notes: global CRITICAL; COUNT(core.matches) = 0
+
+  - check_name: missing_team_source_mapping
+    layer: core
+    grain: dataset
+    enforce_severity: CRITICAL
+    notes: global CRITICAL; team_source_mapping empty or table missing
+
+  - check_name: event_count_raw_staging_core
+    layer: raw/staging/core
+    grain: match
+    enforce_severity: CRITICAL
+    notes: event counts must match across layers
+
+  - check_name: duplicate_event_id
+    layer: staging/core
+    grain: match
+    enforce_severity: CRITICAL
+    notes: event_id unique within match
+
+  - check_name: duplicate_event_index
+    layer: staging/core
+    grain: match
+    enforce_severity: CRITICAL
+    notes: match_id + event_index unique
+
+  - check_name: pass_required_fields
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Pass needs end location and pass length
+
+  - check_name: shot_required_fields
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Shot needs shot_xg and end location
+
+  - check_name: carry_required_fields
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Carry needs carry end location
+
+  - check_name: event_team_not_in_match
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: event team must be home or away
+
+  - check_name: player_not_in_squad
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: player_id must appear in match lineup when set
+
+  - check_name: validate_event_location
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: present location within 0..120 / 0..80; WC2022 oob=0
+
+  - check_name: validate_pass_end_location
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Pass end location within field when present
+
+  - check_name: validate_carry_end_location
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Carry end location within field when present
+
+  - check_name: validate_shot_end_location
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: Shot end x/y within field when present; end_z not field-checked
+
+  - check_name: event_time_bounds
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: minute >= 0, second >= 0, period IN (1..5)
+
+  - check_name: shot_xg_range
+    layer: staging/core
+    grain: match
+    enforce_severity: ERROR
+    notes: 0 <= shot_xg <= 1 for Shot
+
+  - check_name: event_volume_anomaly
+    layer: staging/core
+    grain: match
+    enforce_severity: WARNING
+    notes: "all events < Q1-3*IQR = 2076.75; stays WARNING"
+
+  - check_name: football_data_score_arithmetic
+    layer: staging
+    grain: dataset
+    enforce_severity: ERROR
+    notes: provider score arithmetic contract
+
+  - check_name: cross_source_score_mismatch
+    layer: core
+    grain: match
+    enforce_severity: CRITICAL
+    notes: canonical score without penalties; quarantines match in enforce
+
+  - check_name: cross_source_kickoff_mismatch
+    layer: core
+    grain: match
+    enforce_severity: WARNING
+    notes: kickoff delta > 1 hour
+
+  - check_name: mapping_coverage
+    layer: core
+    grain: dataset
+    enforce_severity: WARNING
+    notes: matched / unmatched / ambiguous coverage
