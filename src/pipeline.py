@@ -534,6 +534,74 @@ def _cleanup_demo_quarantine(conn) -> None:
             )
             cur.execute("DELETE FROM core.matches WHERE canonical_match_id = %s", (canonical_id,))
 
+        # Demo national-team IDs used by --demo-quarantine inject.
+        demo_team_ids = ("999001", "999002")
+        demo_player_ids = ("999101",)
+        cur.execute(
+            """
+            DELETE FROM staging.statsbomb_teams
+            WHERE team_id IN (999001, 999002)
+            """
+        )
+        cur.execute(
+            """
+            DELETE FROM staging.statsbomb_players
+            WHERE player_id IN (999101)
+            """
+        )
+        cur.execute(
+            """
+            SELECT DISTINCT canonical_team_id
+            FROM core.team_source_mapping
+            WHERE source_team_id = ANY(%s)
+               OR source_name ILIKE 'Demo %%'
+            """,
+            (list(demo_team_ids),),
+        )
+        team_ids = [row[0] for row in cur.fetchall()]
+        if team_ids:
+            cur.execute(
+                "DELETE FROM core.team_source_mapping WHERE canonical_team_id = ANY(%s)",
+                (team_ids,),
+            )
+            cur.execute(
+                """
+                DELETE FROM core.teams t
+                WHERE t.canonical_team_id = ANY(%s)
+                  AND NOT EXISTS (
+                      SELECT 1 FROM core.team_source_mapping m
+                      WHERE m.canonical_team_id = t.canonical_team_id
+                  )
+                """,
+                (team_ids,),
+            )
+        cur.execute(
+            """
+            SELECT DISTINCT canonical_player_id
+            FROM core.player_source_mapping
+            WHERE source_player_id = ANY(%s)
+               OR source_name ILIKE 'Demo %%'
+            """,
+            (list(demo_player_ids),),
+        )
+        player_ids = [row[0] for row in cur.fetchall()]
+        if player_ids:
+            cur.execute(
+                "DELETE FROM core.player_source_mapping WHERE canonical_player_id = ANY(%s)",
+                (player_ids,),
+            )
+            cur.execute(
+                """
+                DELETE FROM core.players p
+                WHERE p.canonical_player_id = ANY(%s)
+                  AND NOT EXISTS (
+                      SELECT 1 FROM core.player_source_mapping m
+                      WHERE m.canonical_player_id = p.canonical_player_id
+                  )
+                """,
+                (player_ids,),
+            )
+
 
 def _inject_demo_quarantine_match(conn) -> None:
     """Insert a synthetic match that fails CRITICAL duplicate_event_id in enforce."""
