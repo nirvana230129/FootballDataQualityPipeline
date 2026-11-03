@@ -88,6 +88,35 @@ FROM (
 
 INSERT INTO tmp_dq_results
 SELECT
+    'possession_team_unique',
+    'consistency',
+    CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,
+    CASE WHEN COUNT(*) FILTER (WHERE team_cnt > 1) = 0 THEN 'PASS' ELSE 'FAIL' END,
+    COUNT(*),
+    COUNT(*) FILTER (WHERE team_cnt > 1),
+    COALESCE(
+        jsonb_agg(jsonb_build_object(
+            'possession', possession,
+            'possession_team_ids', team_ids,
+            'team_count', team_cnt
+        )) FILTER (WHERE team_cnt > 1),
+        '[]'::jsonb
+    )
+FROM (
+    SELECT
+        NULLIF(e ->> 'possession', '')::INTEGER AS possession,
+        COUNT(DISTINCT NULLIF(e -> 'possession_team' ->> 'id', '')::BIGINT) AS team_cnt,
+        jsonb_agg(DISTINCT NULLIF(e -> 'possession_team' ->> 'id', '')::BIGINT)
+            FILTER (WHERE NULLIF(e -> 'possession_team' ->> 'id', '') IS NOT NULL) AS team_ids
+    FROM raw.statsbomb_events_current r
+    CROSS JOIN LATERAL jsonb_array_elements(r.payload) AS e
+    WHERE r.source_id = current_setting('app.match_id')
+      AND NULLIF(e ->> 'possession', '') IS NOT NULL
+    GROUP BY NULLIF(e ->> 'possession', '')::INTEGER
+) p;
+
+INSERT INTO tmp_dq_results
+SELECT
     'pass_required_fields',
     'conditional_null',
     CASE WHEN current_setting('app.dq_mode') = 'enforce' THEN 'ERROR' ELSE 'WARNING' END,

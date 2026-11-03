@@ -221,24 +221,59 @@ def _dq_one(
             conn.close()
 
 
-def cmd_dq(args: argparse.Namespace) -> uuid.UUID:
-    match_ids = _resolve_match_ids(args)
-    run_id = uuid.uuid4()
-    mode = _dq_mode()
-    print(f"[dq] matches={len(match_ids)} mode={mode} run_id={run_id}")
+def run_match_and_cross_dq(
+    match_ids: list[int],
+    *,
+    run_id: uuid.UUID | None = None,
+    mode: str | None = None,
+    run_cross: bool = True,
+    reconcile: bool = True,
+) -> uuid.UUID:
+    """Match DQ (+ optional cross-source) under one run_id, then one reconcile."""
+    run = run_id or uuid.uuid4()
+    dq_mode = mode or _dq_mode()
+    print(f"[dq] matches={len(match_ids)} mode={dq_mode} run_id={run}")
     fail_matches = 0
     with connect() as conn:
         for index, match_id in enumerate(match_ids, start=1):
-            rows = _dq_one(match_id, run_id=run_id, conn=conn, commit=False)
+            rows = _dq_one(match_id, run_id=run, conn=conn, commit=False)
             failed = [row for row in rows if row[2] == "FAIL"]
             if failed:
                 fail_matches += 1
+            critical = [row for row in failed if row[1] == "CRITICAL"]
+            flag = " CRITICAL" if critical else ""
             summary = ", ".join(f"{name}:{status}" for name, _, status, _, _ in rows)
-            print(f"  [{index}/{len(match_ids)}] match_id={match_id} {summary}")
-        reconcile_publication(conn, run_id, mode)
+            if summary:
+                print(f"  [{index}/{len(match_ids)}] match_id={match_id} {summary}{flag}")
+            else:
+                print(
+                    f"  [{index}/{len(match_ids)}] match_id={match_id} "
+                    f"fails={len(failed)}{flag}"
+                )
+
+        if run_cross:
+            with conn.cursor() as cur:
+                cur.execute("SELECT set_config('app.run_id', %s, true)", (str(run),))
+                cur.execute("SELECT set_config('app.dq_mode', %s, true)", (dq_mode,))
+                cur.execute(
+                    (ROOT / "sql/quality/cross_source_checks.sql").read_text(encoding="utf-8")
+                )
+            print(f"[dq-cross] run_id={run} mode={dq_mode}")
+
+        if reconcile:
+            pub = reconcile_publication(conn, run, dq_mode)
+            print(
+                f"[dq] publication publishable={pub['publishable']} "
+                f"quarantined={pub['quarantined']} total={pub['total']}"
+            )
         conn.commit()
     print(f"[dq] matches_with_failures={fail_matches}/{len(match_ids)}")
-    return run_id
+    return run
+
+
+def cmd_dq(args: argparse.Namespace) -> uuid.UUID:
+    match_ids = _resolve_match_ids(args)
+    return run_match_and_cross_dq(match_ids, run_cross=False, reconcile=True)
 
 
 def cmd_marts(_: argparse.Namespace) -> None:
@@ -454,7 +489,12 @@ def cmd_resolve_matches(_: argparse.Namespace) -> None:
     )
 
 
-def cmd_dq_cross(args: argparse.Namespace | None = None, *, run_id: uuid.UUID | None = None) -> uuid.UUID:
+def cmd_dq_cross(
+    args: argparse.Namespace | None = None,
+    *,
+    run_id: uuid.UUID | None = None,
+    reconcile: bool = True,
+) -> uuid.UUID:
     run = run_id or uuid.uuid4()
     mode = _dq_mode()
     with connect() as conn, conn.cursor() as cur:
@@ -477,7 +517,8 @@ def cmd_dq_cross(args: argparse.Namespace | None = None, *, run_id: uuid.UUID | 
             (run,),
         )
         rows = cur.fetchall()
-        reconcile_publication(conn, run, mode)
+        if reconcile:
+            reconcile_publication(conn, run, mode)
         conn.commit()
 
     print(f"[dq-cross] run_id={run} mode={mode}")
@@ -696,130 +737,7 @@ def _inject_demo_quarantine_match(conn) -> None:
     )
     with conn.cursor() as cur:
         cur.execute("SELECT set_config('app.match_id', %s, true)", (str(match_id),))
-        cur.execute("DELETE FROM staging.statsbomb_events WHERE match_id = %s", (match_id,))
-        cur.execute("DELETE FROM staging.statsbomb_lineups WHERE match_id = %s", (match_id,))
-        cur.execute("DELETE FROM staging.statsbomb_matches WHERE match_id = %s", (match_id,))
-        # Match + lineups from raw (standard fragment), events via DISTINCT ON.
-        cur.execute(
-            """
-            INSERT INTO staging.statsbomb_matches (
-                match_id, match_date, kick_off, competition_id, competition_name,
-                season_id, season_name, home_team_id, home_team_name,
-                away_team_id, away_team_name, home_score, away_score,
-                source_batch_id, loaded_at
-            )
-            SELECT
-                (m.payload ->> 'match_id')::BIGINT,
-                (m.payload ->> 'match_date')::DATE,
-                m.payload ->> 'kick_off',
-                (m.payload -> 'competition' ->> 'competition_id')::BIGINT,
-                m.payload -> 'competition' ->> 'competition_name',
-                (m.payload -> 'season' ->> 'season_id')::BIGINT,
-                m.payload -> 'season' ->> 'season_name',
-                (m.payload -> 'home_team' ->> 'home_team_id')::BIGINT,
-                m.payload -> 'home_team' ->> 'home_team_name',
-                (m.payload -> 'away_team' ->> 'away_team_id')::BIGINT,
-                m.payload -> 'away_team' ->> 'away_team_name',
-                (m.payload ->> 'home_score')::INTEGER,
-                (m.payload ->> 'away_score')::INTEGER,
-                m.batch_id,
-                NOW()
-            FROM raw.statsbomb_matches_current m
-            WHERE m.source_id = %s
-            """,
-            (str(match_id),),
-        )
-        cur.execute(
-            """
-            INSERT INTO staging.statsbomb_teams (team_id, team_name, source_batch_id, loaded_at)
-            SELECT DISTINCT team_id, team_name, source_batch_id, NOW()
-            FROM (
-                SELECT home_team_id AS team_id, home_team_name AS team_name, source_batch_id
-                FROM staging.statsbomb_matches WHERE match_id = %s
-                UNION ALL
-                SELECT away_team_id, away_team_name, source_batch_id
-                FROM staging.statsbomb_matches WHERE match_id = %s
-            ) t
-            ON CONFLICT (team_id) DO UPDATE
-            SET team_name = EXCLUDED.team_name,
-                source_batch_id = EXCLUDED.source_batch_id,
-                loaded_at = EXCLUDED.loaded_at
-            """,
-            (match_id, match_id),
-        )
-        cur.execute(
-            """
-            INSERT INTO staging.statsbomb_lineups (
-                match_id, team_id, player_id, player_name, jersey_number,
-                source_batch_id, loaded_at
-            )
-            SELECT
-                %s,
-                (team_elem ->> 'team_id')::BIGINT,
-                (player_elem ->> 'player_id')::BIGINT,
-                player_elem ->> 'player_name',
-                NULLIF(player_elem ->> 'jersey_number', '')::INTEGER,
-                l.batch_id,
-                NOW()
-            FROM raw.statsbomb_lineups_current l
-            CROSS JOIN LATERAL jsonb_array_elements(l.payload) AS team_elem
-            CROSS JOIN LATERAL jsonb_array_elements(team_elem -> 'lineup') AS player_elem
-            WHERE l.source_id = %s
-            """,
-            (match_id, str(match_id)),
-        )
-        cur.execute(
-            """
-            INSERT INTO staging.statsbomb_players (player_id, player_name, source_batch_id, loaded_at)
-            SELECT DISTINCT player_id, player_name, source_batch_id, NOW()
-            FROM staging.statsbomb_lineups
-            WHERE match_id = %s
-            ON CONFLICT (player_id) DO UPDATE
-            SET player_name = EXCLUDED.player_name,
-                source_batch_id = EXCLUDED.source_batch_id,
-                loaded_at = EXCLUDED.loaded_at
-            """,
-            (match_id,),
-        )
-        cur.execute(
-            """
-            INSERT INTO staging.statsbomb_events (
-                event_id, match_id, event_index, period, minute, second,
-                team_id, player_id, event_type, x, y, end_x, end_y, end_z,
-                pass_recipient_id, pass_outcome, pass_length, is_cross,
-                shot_xg, shot_outcome, carry_end_x, carry_end_y,
-                possession, possession_team_id, source_batch_id, loaded_at
-            )
-            SELECT DISTINCT ON (e ->> 'id')
-                e ->> 'id',
-                %s,
-                (e ->> 'index')::INTEGER,
-                (e ->> 'period')::INTEGER,
-                (e ->> 'minute')::INTEGER,
-                (e ->> 'second')::INTEGER,
-                NULLIF(e -> 'team' ->> 'id', '')::BIGINT,
-                NULLIF(e -> 'player' ->> 'id', '')::BIGINT,
-                e -> 'type' ->> 'name',
-                NULLIF(e -> 'location' ->> 0, '')::DOUBLE PRECISION,
-                NULLIF(e -> 'location' ->> 1, '')::DOUBLE PRECISION,
-                NULLIF(e -> 'pass' -> 'end_location' ->> 0, '')::DOUBLE PRECISION,
-                NULLIF(e -> 'pass' -> 'end_location' ->> 1, '')::DOUBLE PRECISION,
-                NULL,
-                NULL, NULL,
-                NULLIF(e -> 'pass' ->> 'length', '')::DOUBLE PRECISION,
-                FALSE,
-                NULL, NULL, NULL, NULL,
-                NULL, NULL,
-                r.batch_id,
-                NOW()
-            FROM raw.statsbomb_events_current r
-            CROSS JOIN LATERAL jsonb_array_elements(r.payload) AS e
-            WHERE r.source_id = %s
-            ORDER BY e ->> 'id', (e ->> 'index')::INTEGER
-            """,
-            (match_id, str(match_id)),
-        )
-        cur.execute("SELECT set_config('app.match_id', %s, true)", (str(match_id),))
+        cur.execute((ROOT / "sql/staging/load_statsbomb_match.sql").read_text(encoding="utf-8"))
         cur.execute((ROOT / "sql/core/build_statsbomb_match.sql").read_text(encoding="utf-8"))
 
 
@@ -850,34 +768,15 @@ def cmd_phase4(args: argparse.Namespace) -> None:
         if demo and DEMO_QUARANTINE_MATCH_ID not in match_ids:
             match_ids = list(match_ids) + [DEMO_QUARANTINE_MATCH_ID]
 
-        fail_matches = 0
+        run_match_and_cross_dq(
+            match_ids,
+            run_id=run_id,
+            mode="enforce",
+            run_cross=True,
+            reconcile=True,
+        )
+
         with connect() as conn:
-            for index, match_id in enumerate(match_ids, start=1):
-                rows = _dq_one(match_id, run_id=run_id, conn=conn, commit=False)
-                failed = [row for row in rows if row[2] == "FAIL"]
-                if failed:
-                    fail_matches += 1
-                critical = [row for row in failed if row[1] == "CRITICAL"]
-                flag = " CRITICAL" if critical else ""
-                print(
-                    f"  [{index}/{len(match_ids)}] match_id={match_id} "
-                    f"fails={len(failed)}{flag}"
-                )
-
-            with conn.cursor() as cur:
-                cur.execute("SELECT set_config('app.run_id', %s, true)", (str(run_id),))
-                cur.execute("SELECT set_config('app.dq_mode', %s, true)", ("enforce",))
-                cur.execute(
-                    (ROOT / "sql/quality/cross_source_checks.sql").read_text(encoding="utf-8")
-                )
-
-            pub = reconcile_publication(conn, run_id, "enforce")
-            print(
-                f"[phase4] publication publishable={pub['publishable']} "
-                f"quarantined={pub['quarantined']} total={pub['total']}"
-            )
-            print(f"[phase4] matches_with_failures={fail_matches}/{len(match_ids)}")
-
             global_rows = run_global_checks(conn, run_id, "enforce")
             for check_name, severity, status, checked, failed, details in global_rows:
                 print(

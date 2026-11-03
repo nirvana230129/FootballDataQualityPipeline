@@ -161,6 +161,16 @@ python -m src.pipeline profile --competition WC2022
 - DQ registry: `config/checks.yml`
 - Airflow DAG: `dags/football_pipeline.py`
 
+## Data attribution
+
+Event and lineup data used in this project is provided by
+[StatsBomb Open Data](https://github.com/statsbomb/open-data).
+When redistributing analysis based on that dataset, credit StatsBomb as the
+source and follow their Open Data terms / Media Pack for logo usage.
+
+Match metadata and scores for cross-source checks also use
+[football-data.org](https://www.football-data.org/) (API v4).
+
 ## Limitations
 
 - Players and events exist only from StatsBomb (no cross-provider player mapping).

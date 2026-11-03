@@ -120,7 +120,9 @@ INSERT INTO staging.statsbomb_events (
     source_batch_id,
     loaded_at
 )
-SELECT
+-- Deterministic dedup: raw keeps duplicate event ids; staging keeps one row
+-- per event_id (lowest event_index). DQ still sees raw duplicates.
+SELECT DISTINCT ON (e ->> 'id')
     e ->> 'id',
     current_setting('app.match_id')::BIGINT,
     (e ->> 'index')::INTEGER,
@@ -182,4 +184,5 @@ SELECT
     NOW()
 FROM raw.statsbomb_events_current r
 CROSS JOIN LATERAL jsonb_array_elements(r.payload) AS e
-WHERE r.source_id = current_setting('app.match_id');
+WHERE r.source_id = current_setting('app.match_id')
+ORDER BY e ->> 'id', (e ->> 'index')::INTEGER NULLS LAST;

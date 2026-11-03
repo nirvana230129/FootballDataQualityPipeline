@@ -235,7 +235,8 @@ INSERT INTO core.events (
     carry_end_x,
     carry_end_y,
     possession,
-    possession_team_id
+    possession_team_id,
+    canonical_possession_team_id
 )
 SELECT
     e.event_id,
@@ -262,7 +263,8 @@ SELECT
     e.carry_end_x,
     e.carry_end_y,
     e.possession,
-    e.possession_team_id
+    e.possession_team_id,
+    ptm.canonical_team_id
 FROM staging.statsbomb_events e
 JOIN core.match_source_mapping msm
   ON msm.provider = 'statsbomb'
@@ -270,6 +272,9 @@ JOIN core.match_source_mapping msm
 LEFT JOIN core.team_source_mapping tm
   ON tm.provider = 'statsbomb'
  AND tm.source_team_id = e.team_id::TEXT
+LEFT JOIN core.team_source_mapping ptm
+  ON ptm.provider = 'statsbomb'
+ AND ptm.source_team_id = e.possession_team_id::TEXT
 LEFT JOIN core.player_source_mapping pm
   ON pm.provider = 'statsbomb'
  AND pm.source_player_id = e.player_id::TEXT

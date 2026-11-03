@@ -123,10 +123,15 @@ CREATE TABLE IF NOT EXISTS core.events (
     shot_outcome            TEXT,
     carry_end_x             DOUBLE PRECISION,
     carry_end_y             DOUBLE PRECISION,
-    possession              INTEGER,
-    possession_team_id      BIGINT,
+    possession                      INTEGER,
+    possession_team_id              BIGINT,
+    canonical_possession_team_id    BIGINT REFERENCES core.teams (canonical_team_id),
     PRIMARY KEY (canonical_match_id, event_id)
 );
+
+ALTER TABLE core.events
+    ADD COLUMN IF NOT EXISTS canonical_possession_team_id BIGINT
+        REFERENCES core.teams (canonical_team_id);
 
 CREATE INDEX IF NOT EXISTS idx_core_events_match
     ON core.events (canonical_match_id);

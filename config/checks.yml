@@ -33,6 +33,12 @@ checks:
     enforce_severity: CRITICAL
     notes: event_id unique within match
 
+  - check_name: possession_team_unique
+    layer: raw
+    grain: match
+    enforce_severity: ERROR
+    notes: one possession_team.id per (match, possession)
+
   - check_name: duplicate_event_index
     layer: staging/core
     grain: match

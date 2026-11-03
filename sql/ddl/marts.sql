@@ -46,8 +46,31 @@ CREATE TABLE IF NOT EXISTS marts.possessions (
     has_shot            BOOLEAN,
     has_goal            BOOLEAN,
     total_xg            DOUBLE PRECISION,
-    PRIMARY KEY (match_id, possession_id, team_id)
+    PRIMARY KEY (match_id, possession_id)
 );
+
+DO $$
+DECLARE
+    pk_cols TEXT;
+BEGIN
+    SELECT string_agg(a.attname, ',' ORDER BY array_position(c.conkey, a.attnum))
+      INTO pk_cols
+    FROM pg_constraint c
+    JOIN pg_attribute a
+      ON a.attrelid = c.conrelid
+     AND a.attnum = ANY (c.conkey)
+    WHERE c.conname = 'possessions_pkey'
+      AND c.conrelid = 'marts.possessions'::regclass;
+
+    IF pk_cols IS DISTINCT FROM 'match_id,possession_id' THEN
+        TRUNCATE marts.possessions, marts.shot_possessions;
+        IF pk_cols IS NOT NULL THEN
+            ALTER TABLE marts.possessions DROP CONSTRAINT possessions_pkey;
+        END IF;
+        ALTER TABLE marts.possessions
+            ADD CONSTRAINT possessions_pkey PRIMARY KEY (match_id, possession_id);
+    END IF;
+END $$;
 
 CREATE TABLE IF NOT EXISTS marts.shot_possessions (
     start_zone              TEXT PRIMARY KEY,

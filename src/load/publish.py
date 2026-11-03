@@ -15,9 +15,25 @@ def _set_run_context(cur, run_id: uuid.UUID, dq_mode: str) -> None:
 
 
 def run_global_checks(conn: Connection, run_id: uuid.UUID, dq_mode: str) -> list[tuple[Any, ...]]:
+    """Schema preflight first; data global checks only if schema PASS."""
     with conn.cursor() as cur:
         _set_run_context(cur, run_id, dq_mode)
-        cur.execute((ROOT / "sql/quality/global_checks.sql").read_text(encoding="utf-8"))
+        cur.execute((ROOT / "sql/quality/schema_preflight.sql").read_text(encoding="utf-8"))
+        cur.execute(
+            """
+            SELECT status
+            FROM monitoring.data_quality_results
+            WHERE run_id = %s
+              AND check_name = 'missing_required_table_or_column'
+            ORDER BY check_id DESC
+            LIMIT 1
+            """,
+            (run_id,),
+        )
+        schema_row = cur.fetchone()
+        schema_ok = schema_row is not None and schema_row[0] == "PASS"
+        if schema_ok:
+            cur.execute((ROOT / "sql/quality/global_checks.sql").read_text(encoding="utf-8"))
         cur.execute(
             """
             SELECT check_name, severity, status, records_checked, records_failed, details

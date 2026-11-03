@@ -151,7 +151,7 @@ WITH analytical AS (
     SELECT
         e.canonical_match_id,
         e.possession,
-        e.canonical_team_id AS team_id,
+        e.canonical_possession_team_id AS team_id,
         e.event_id,
         e.event_index,
         e.event_type,
@@ -171,10 +171,31 @@ WITH analytical AS (
 ordered AS (
     SELECT
         *,
-        FIRST_VALUE(x) OVER w AS start_x,
-        FIRST_VALUE(y) OVER w AS start_y,
-        LAST_VALUE(x) OVER w AS end_x,
-        LAST_VALUE(y) OVER w AS end_y,
+        FIRST_VALUE(x) OVER (
+            PARTITION BY canonical_match_id, possession
+            ORDER BY CASE WHEN x IS NULL OR y IS NULL THEN 1 ELSE 0 END, event_index
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ) AS start_x,
+        FIRST_VALUE(y) OVER (
+            PARTITION BY canonical_match_id, possession
+            ORDER BY CASE WHEN x IS NULL OR y IS NULL THEN 1 ELSE 0 END, event_index
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ) AS start_y,
+        FIRST_VALUE(x) OVER (
+            PARTITION BY canonical_match_id, possession
+            ORDER BY CASE WHEN x IS NULL OR y IS NULL THEN 1 ELSE 0 END, event_index DESC
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ) AS end_x,
+        FIRST_VALUE(y) OVER (
+            PARTITION BY canonical_match_id, possession
+            ORDER BY CASE WHEN x IS NULL OR y IS NULL THEN 1 ELSE 0 END, event_index DESC
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ) AS end_y,
+        FIRST_VALUE(team_id) OVER (
+            PARTITION BY canonical_match_id, possession
+            ORDER BY CASE WHEN team_id IS NULL THEN 1 ELSE 0 END, event_index
+            ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
+        ) AS possession_team_id,
         COUNT(*) OVER w AS event_count,
         COUNT(*) FILTER (WHERE event_type = 'Pass') OVER w AS pass_count,
         BOOL_OR(event_type = 'Shot') OVER w AS has_shot,
@@ -183,12 +204,12 @@ ordered AS (
         MIN(minute * 60 + second) OVER w AS start_sec,
         MAX(minute * 60 + second) OVER w AS end_sec,
         ROW_NUMBER() OVER (
-            PARTITION BY canonical_match_id, possession, team_id
+            PARTITION BY canonical_match_id, possession
             ORDER BY event_index
         ) AS rn
     FROM analytical
     WINDOW w AS (
-        PARTITION BY canonical_match_id, possession, team_id
+        PARTITION BY canonical_match_id, possession
         ORDER BY event_index
         ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING
     )
@@ -213,7 +234,7 @@ INSERT INTO marts.possessions (
 SELECT
     possession,
     canonical_match_id,
-    team_id,
+    possession_team_id,
     start_x,
     start_y,
     pg_temp.zone_name(start_x, start_y),
@@ -227,7 +248,8 @@ SELECT
     has_goal,
     total_xg
 FROM ordered
-WHERE rn = 1;
+WHERE rn = 1
+  AND possession_team_id IS NOT NULL;
 
 INSERT INTO marts.shot_possessions (
     start_zone,

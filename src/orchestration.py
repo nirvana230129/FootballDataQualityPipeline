@@ -73,11 +73,11 @@ def run_sql_step(step: str, competition: str = "WC2022") -> None:
 
 
 def run_dq(competition: str = "WC2022") -> None:
-    """Match DQ + cross-source DQ (publication reconcile inside each)."""
-    from src.pipeline import cmd_dq, cmd_dq_cross
+    """Match DQ + cross-source DQ under one run_id, then one publication reconcile."""
+    from src.pipeline import _resolve_match_ids, run_match_and_cross_dq
 
-    _call(cmd_dq, _ns(match_id=None, competition=competition))
-    _call(cmd_dq_cross, _ns())
+    match_ids = _resolve_match_ids(_ns(match_id=None, competition=competition))
+    run_match_and_cross_dq(match_ids, run_cross=True, reconcile=True)
 
 
 def run_resolve_entities() -> None:
