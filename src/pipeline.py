@@ -270,11 +270,28 @@ def cmd_marts(_: argparse.Namespace) -> None:
 
 def cmd_viz(args: argparse.Namespace) -> None:
     from src.visualization.box_entries import render_box_entries
+    from src.visualization.pass_map import render_progressive_passes
+    from src.visualization.zone_heatmap import render_zone_heatmap
 
     match_id = args.match_id if args.match_id is not None else FINAL_MATCH_ID
-    output = ROOT / "artifacts" / f"box_entries_{match_id}.png"
-    path = render_box_entries(match_id, output)
-    print(f"[viz] wrote {path}")
+    map_choice = (getattr(args, "map", None) or "all").strip().lower()
+    writers = {
+        "box": ("box_entries", render_box_entries),
+        "progressive": ("progressive_passes", render_progressive_passes),
+        "heatmap": ("zone_heatmap", render_zone_heatmap),
+    }
+    if map_choice == "all":
+        selected = list(writers.keys())
+    elif map_choice in writers:
+        selected = [map_choice]
+    else:
+        raise SystemExit("viz --map must be one of: all, box, progressive, heatmap")
+
+    out_dir = ROOT / "artifacts"
+    for key in selected:
+        stem, renderer = writers[key]
+        path = renderer(match_id, out_dir / f"{stem}_{match_id}.png")
+        print(f"[viz] wrote {path}")
 
 
 def _write_csv(path: Path, headers: Iterable[str], rows: Iterable[Iterable[Any]]) -> None:
@@ -838,7 +855,8 @@ def cmd_run(args: argparse.Namespace) -> None:
     cmd_marts(args)
 
     viz_args = argparse.Namespace(
-        match_id=args.match_id if args.match_id is not None else FINAL_MATCH_ID
+        match_id=args.match_id if args.match_id is not None else FINAL_MATCH_ID,
+        map="all",
     )
     cmd_viz(viz_args)
 
@@ -891,8 +909,15 @@ def build_parser() -> argparse.ArgumentParser:
     p_marts = sub.add_parser("marts", help="Rebuild analytics marts")
     p_marts.set_defaults(func=cmd_marts)
 
-    p_viz = sub.add_parser("viz", help="Render box entries map")
+    p_viz = sub.add_parser("viz", help="Render mplsoccer pitch maps")
     p_viz.add_argument("--match-id", type=int, default=FINAL_MATCH_ID)
+    p_viz.add_argument(
+        "--map",
+        type=str,
+        default="all",
+        choices=["all", "box", "progressive", "heatmap"],
+        help="Which map to render (default: all)",
+    )
     p_viz.set_defaults(func=cmd_viz)
 
     p_profile = sub.add_parser("profile", help="Profile volumes, coordinates, and event types")

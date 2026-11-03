@@ -3,9 +3,9 @@ from __future__ import annotations
 from pathlib import Path
 
 import matplotlib.pyplot as plt
-from mplsoccer import Pitch
 
 from src.db import connect
+from src.visualization.pitch import make_pitch
 
 
 def render_box_entries(match_id: int, output_path: Path) -> Path:
@@ -14,10 +14,13 @@ def render_box_entries(match_id: int, output_path: Path) -> Path:
     with connect() as conn, conn.cursor() as cur:
         cur.execute(
             """
-            SELECT start_x, start_y, end_x, end_y, action_type, is_cross
+            SELECT be.start_x, be.start_y, be.end_x, be.end_y, be.action_type, be.is_cross
             FROM marts.box_entries be
             JOIN core.match_source_mapping msm
               ON msm.canonical_match_id = be.match_id
+            JOIN monitoring.match_publication_status mps
+              ON mps.canonical_match_id = be.match_id
+             AND mps.publication_status = 'PUBLISHABLE'
             WHERE msm.provider = 'statsbomb'
               AND msm.source_match_id = %s
             """,
@@ -25,7 +28,7 @@ def render_box_entries(match_id: int, output_path: Path) -> Path:
         )
         rows = cur.fetchall()
 
-    pitch = Pitch(pitch_type="statsbomb", line_zorder=2)
+    pitch = make_pitch()
     fig, ax = pitch.draw(figsize=(10, 7))
     ax.set_title(f"Box entries — StatsBomb match {match_id}")
 
