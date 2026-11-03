@@ -34,12 +34,15 @@ Airflow 3.0.2 LocalExecutor (`football_data_pipeline`) wrapping the same CLI. UI
 
 ![Airflow UI](docs/airflow_ui.png)
 
+![Airflow DAG](docs/airflow_dag.png)
+
 ### Phase 6
 
 Delivery / presentation (no Superset — outside MVP):
 
 - three mplsoccer maps for the final
 - architecture + data-model diagrams
+- progressive-pass definition notebook (`notebooks/metric_validation.ipynb`)
 - README visualizations
 
 ![Data model](docs/data_model.png)
